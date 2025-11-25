@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfee2v6mhn08g"]
+
+[ext_resource type="Script" uid="uid://ixpxwdl2ur46" path="res://main_menu.gd" id="1_l6cm7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhts7"]
+bg_color = Color(0.89089787, 0.4546215, 0.38043264, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.69411767)
+shadow_size = 4
+shadow_offset = Vector2(5.26, 8.91)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 646.0
+script = ExtResource("1_l6cm7")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1285.0
+offset_bottom = 772.0
+color = Color(0.6994803, 0.44349718, 0.55254096, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 157.0
+offset_right = 1142.0
+offset_bottom = 452.0
+theme_override_constants/separation = 79
+
+[node name="playButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhts7")
+text = "INICIAR JUEGO"
+
+[node name="playButton2" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhts7")
+text = "SALIR"
+
+[connection signal="pressed" from="VBoxContainer/playButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/playButton2" to="." method="_on_play_button_2_pressed"]
