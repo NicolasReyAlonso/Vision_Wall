@@ -67,7 +67,7 @@ mesh = SubResource("PlaneMesh_w16ng")
 shape = SubResource("ConcavePolygonShape3D_twn0q")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434817, 0.34729826)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434817, 0.4956771)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.37429914, 0.927308, 0, -0.927308, 0.37429914, 0, 1.2824159, 0.42458045)
