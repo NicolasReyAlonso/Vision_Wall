@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfee2v6mhn08g"]
+[gd_scene load_steps=5 format=3 uid="uid://cfee2v6mhn08g"]
 
 [ext_resource type="Script" uid="uid://ixpxwdl2ur46" path="res://main_menu.gd" id="1_l6cm7"]
+[ext_resource type="AudioStream" uid="uid://63dn2u38ad27" path="res://assets/SoundEffects/soundEffect_buttonHover.ogg" id="2_ekxnf"]
+[ext_resource type="AudioStream" uid="uid://c58ih383nvp84" path="res://assets/SoundEffects/soundEffect_buttonClick.ogg" id="3_bqqt6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhts7"]
 bg_color = Color(0.89089787, 0.4546215, 0.38043264, 1)
@@ -12,12 +14,14 @@ shadow_color = Color(0, 0, 0, 0.69411767)
 shadow_size = 4
 shadow_offset = Vector2(5.26, 8.91)
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("soundEffectHover", "soundEffectclick")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 646.0
 script = ExtResource("1_l6cm7")
+soundEffectHover = NodePath("SoundEffectHover")
+soundEffectclick = NodePath("SoundEffectClick")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
@@ -49,5 +53,15 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_rhts7")
 text = "SALIR"
 
+[node name="SoundEffectHover" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ekxnf")
+
+[node name="SoundEffectClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_bqqt6")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/playButton" to="." method="_on_play_button_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/playButton" to="." method="_on_play_button_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/playButton2" to="." method="_on_play_button_2_focus_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/playButton2" to="." method="_on_play_button_2_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/playButton2" to="." method="_on_play_button_2_pressed"]
