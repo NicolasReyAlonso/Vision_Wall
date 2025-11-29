@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=17 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
 [ext_resource type="PackedScene" uid="uid://by6t3bsb6eggk" path="res://scenes/Marker.tscn" id="2_hhxvm"]
 [ext_resource type="ArrayMesh" uid="uid://bhm8eqk5xw3kr" path="res://assets/maincharrigged.obj" id="3_twn0q"]
+[ext_resource type="Texture2D" uid="uid://d2553s60dbp71" path="res://assets/Evironments/HDR_multi_nebulae.hdr" id="5_w16ng"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ifl6"]
 
@@ -28,6 +29,16 @@ material = SubResource("StandardMaterial3D_hhxvm")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_twn0q"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1jq6i"]
+panorama = ExtResource("5_w16ng")
+
+[sub_resource type="Sky" id="Sky_al2iq"]
+sky_material = SubResource("PanoramaSkyMaterial_1jq6i")
+
+[sub_resource type="Environment" id="Environment_dmtm4"]
+background_mode = 2
+sky = SubResource("Sky_al2iq")
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_ki6c0")
@@ -74,3 +85,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434817, 2.6619172)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.37429914, 0.927308, 0, -0.927308, 0.37429914, 0, 1.2824159, 0.42458045)
 shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dmtm4")
