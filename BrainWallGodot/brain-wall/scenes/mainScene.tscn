@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=21 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
 [ext_resource type="PackedScene" uid="uid://by6t3bsb6eggk" path="res://scenes/Marker.tscn" id="2_hhxvm"]
 [ext_resource type="ArrayMesh" uid="uid://bhm8eqk5xw3kr" path="res://assets/maincharrigged.obj" id="3_twn0q"]
+[ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ifl6"]
@@ -109,9 +110,17 @@ size = Vector3(0.74, 0.5, 1)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_twn0q"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_al2iq"]
+panorama = ExtResource("5_1jq6i")
+
+[sub_resource type="Sky" id="Sky_dmtm4"]
+sky_material = SubResource("PanoramaSkyMaterial_al2iq")
+
 [sub_resource type="Environment" id="Environment_1jq6i"]
-background_mode = 1
+background_mode = 2
 background_color = Color(0.53, 0.81, 0.92, 1)
+background_energy_multiplier = 0.31
+sky = SubResource("Sky_dmtm4")
 tonemap_mode = 2
 glow_enabled = true
 
@@ -160,6 +169,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.434817, 2.66192)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.374299, 0.927308, 0, -0.927308, 0.374299, 0, 5, 0)
+light_energy = 0.67
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
