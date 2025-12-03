@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=36 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
@@ -7,7 +7,10 @@
 [ext_resource type="Script" uid="uid://c8pjb8dafad15" path="res://scenes/rigid_body_3d.gd" id="4_al2iq"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
+[ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
+[ext_resource type="Shader" uid="uid://dvigqnwwgftj1" path="res://assets/shaders/outline.gdshader" id="7_3tio3"]
 [ext_resource type="Script" uid="uid://c1hsvx452qj01" path="res://scenes/cube.gd" id="8_dmtm4"]
+[ext_resource type="Shader" uid="uid://cb1agqsu2lkix" path="res://assets/shaders/toon_water.gdshader" id="8_jmmcx"]
 [ext_resource type="Script" uid="uid://blisl35nko52s" path="res://scenes/wall.gd" id="9_1xypn"]
 [ext_resource type="Script" uid="uid://sgh6f385n4lf" path="res://scenes/character_body_3d.gd" id="10_2n1xb"]
 
@@ -17,70 +20,22 @@
 material = SubResource("StandardMaterial3D_8ifl6")
 size = Vector2(3, 1.5)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ha8th"]
+render_priority = 0
+shader = ExtResource("6_fp4eh")
+shader_parameter/steps = 2
+shader_parameter/base_color = Color(1, 0.8000001, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3tio3"]
+next_pass = SubResource("ShaderMaterial_ha8th")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vdgl5"]
+render_priority = 0
+shader = ExtResource("7_3tio3")
+shader_parameter/outline_width = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_dmtm4"]
-
-[sub_resource type="Shader" id="Shader_hhxvm"]
-code = "shader_type spatial;
-render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx;
-
-uniform vec4 albedo : source_color = vec4(0.0, 0.204, 0.961, 0.506);
-uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
-uniform float roughness : hint_range(0.0, 1.0) = 0.0;
-uniform float metallic : hint_range(0.0, 1.0) = 0.0;
-uniform float specular : hint_range(0.0, 1.0) = 0.5;
-uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
-uniform float normal_scale : hint_range(-16.0, 16.0) = 1.0;
-uniform float refraction : hint_range(-1.0, 1.0) = 0.05;
-
-uniform vec3 uv1_scale = vec3(1.0, 1.0, 1.0);
-uniform vec3 uv1_offset = vec3(0.0, 0.0, 0.0);
-uniform float uv1_blend_sharpness = 1.0;
-
-varying vec3 uv1_triplanar_pos;
-varying vec3 uv1_power_normal;
-
-void vertex() {
-	vec3 normal = NORMAL;
-	
-	TANGENT = vec3(0.0, 0.0, -1.0) * abs(normal.x);
-	TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.y);
-	TANGENT += vec3(1.0, 0.0, 0.0) * abs(normal.z);
-	TANGENT = normalize(TANGENT);
-	
-	BINORMAL = vec3(0.0, 1.0, 0.0) * abs(normal.x);
-	BINORMAL += vec3(0.0, 0.0, -1.0) * abs(normal.y);
-	BINORMAL += vec3(0.0, 1.0, 0.0) * abs(normal.z);
-	BINORMAL = normalize(BINORMAL);
-	
-	uv1_power_normal = pow(abs(NORMAL), vec3(uv1_blend_sharpness));
-	uv1_triplanar_pos = VERTEX * uv1_scale + uv1_offset + vec3(TIME * 0.1);
-	uv1_power_normal /= dot(uv1_power_normal, vec3(1.0));
-	uv1_triplanar_pos *= vec3(1.0, -1.0, 1.0);
-}
-
-vec4 triplanar_texture(sampler2D p_sampler, vec3 p_weights, vec3 p_triplanar_pos) {
-	vec4 samp = vec4(0.0);
-	samp += texture(p_sampler, p_triplanar_pos.xy) * p_weights.z;
-	samp += texture(p_sampler, p_triplanar_pos.xz) * p_weights.y;
-	samp += texture(p_sampler, p_triplanar_pos.zy * vec2(-1.0, 1.0)) * p_weights.x;
-	return samp;
-}
-
-void fragment() {
-	vec4 albedo_tex = triplanar_texture(texture_albedo, uv1_power_normal, uv1_triplanar_pos);
-	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	
-	METALLIC = metallic;
-	SPECULAR = specular;
-	ROUGHNESS = roughness;
-	
-	vec3 normal_tex = triplanar_texture(texture_normal, uv1_power_normal, uv1_triplanar_pos).rgb;
-	NORMAL_MAP = normal_tex;
-	NORMAL_MAP_DEPTH = normal_scale;
-	
-	ALPHA = albedo.a * albedo_tex.a;
-}
-"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w16ng"]
 
@@ -91,15 +46,16 @@ as_normal_map = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_al2iq"]
 render_priority = 0
-shader = SubResource("Shader_hhxvm")
+shader = ExtResource("8_jmmcx")
 shader_parameter/albedo = Color(0, 0.20392157, 0.9607843, 0.5058824)
-shader_parameter/roughness = 0.0
-shader_parameter/metallic = 0.0
-shader_parameter/specular = 0.5
+shader_parameter/toon_steps = 1.898000042655
+shader_parameter/toon_specular_steps = 1.134000006365
+shader_parameter/rim_strength = 0.0
+shader_parameter/rim_threshold = 0.230000010925
+shader_parameter/saturation_boost = 0.7370000350075
 shader_parameter/texture_normal = SubResource("NoiseTexture2D_1jq6i")
-shader_parameter/normal_scale = 1.0
-shader_parameter/refraction = 0.05
-shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/normal_scale = 0.6000007885000009
+shader_parameter/uv1_scale = Vector3(16.325, 6.67, 17.475)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv1_blend_sharpness = 1.0
 
@@ -125,6 +81,11 @@ background_energy_multiplier = 0.31
 sky = SubResource("Sky_dmtm4")
 tonemap_mode = 2
 glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1244
+volumetric_fog_albedo = Color(0.7800554, 0.4478112, 5.7756904e-07, 1)
+volumetric_fog_anisotropy = 0.79
+volumetric_fog_sky_affect = 0.715
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_al2iq"]
 size = Vector3(10, 1, 1)
@@ -164,6 +125,11 @@ script = ExtResource("4_al2iq")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
 transform = Transform3D(-0.00092482206, 0, 0.06999389, 0, 0.07, 0, -0.06999389, 0, -0.00092482206, -1.5052215, -0.45323288, 1.8655217)
 mesh = ExtResource("3_twn0q")
+surface_material_override/0 = SubResource("StandardMaterial3D_3tio3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/MeshInstance3D"]
+mesh = ExtResource("3_twn0q")
+surface_material_override/0 = SubResource("ShaderMaterial_vdgl5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4023641, -0.2825688, 1.7542357)
@@ -173,7 +139,7 @@ shape = SubResource("BoxShape3D_dmtm4")
 transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.28910822)
 
 [node name="Water" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, -1.6985617, 0, -0.023804307)
+transform = Transform3D(22.533588, 0, 0, 0, 1, 0, 0, 0, 38.794487, -1.6985617, 0, -0.023804307)
 mesh = SubResource("BoxMesh_dmtm4")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
@@ -189,7 +155,7 @@ shape = SubResource("ConcavePolygonShape3D_twn0q")
 transform = Transform3D(0.03559715, -0.26849738, 0.96262246, 0, 0.96323293, 0.26866764, -0.9993662, -0.009563803, 0.034288347, 0.31714106, 1.2105271, 0.25745714)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.374299, 0.927308, 0, -0.927308, 0.374299, 0, 5, 0)
+transform = Transform3D(0.5929123, 0.48824954, -0.640365, -0.112810746, 0.8377407, 0.5342885, 0.79732585, -0.24454623, 0.55178666, 0, 5, 0)
 light_energy = 0.67
 shadow_enabled = true
 
@@ -210,7 +176,7 @@ transform = Transform3D(0.994259, 0, 0, 0, 0.994259, 0, 0, 0, 0.994259, -4.17997
 script = ExtResource("9_1xypn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Wall"]
-transform = Transform3D(0.000890075, 0, -0.9999996, 0, 1, 0, 0.9999996, 0, 0.000890075, -2.4325666, 0.46856135, 2.9633038)
+transform = Transform3D(0.049494725, 0, -0.99877447, 0, 1, 0, 0.99877447, 0, 0.049494725, -2.7164564, 0.46856135, 2.675354)
 mesh = SubResource("BoxMesh_2n1xb")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Wall"]

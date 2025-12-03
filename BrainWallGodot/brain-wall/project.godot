@@ -23,7 +23,3 @@ GDMPAndroid="*res://addons/GDMP/GDMPAndroid.gd"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GDMP/plugin.cfg")
-
-[rendering]
-
-renderer/rendering_method="mobile"
