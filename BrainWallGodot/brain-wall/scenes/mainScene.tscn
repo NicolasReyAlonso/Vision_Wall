@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=43 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
@@ -14,7 +14,31 @@
 [ext_resource type="Script" uid="uid://blisl35nko52s" path="res://scenes/wall.gd" id="9_1xypn"]
 [ext_resource type="Script" uid="uid://sgh6f385n4lf" path="res://scenes/character_body_3d.gd" id="10_2n1xb"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3tio3"]
+frequency = 0.0731
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jmmcx"]
+noise = SubResource("FastNoiseLite_3tio3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnm5q"]
+render_priority = 0
+shader = ExtResource("7_3tio3")
+shader_parameter/outline_width = 0.03
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0eirs"]
+frequency = 0.037
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gg62s"]
+width = 1732
+noise = SubResource("FastNoiseLite_0eirs")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ifl6"]
+next_pass = SubResource("ShaderMaterial_hnm5q")
+albedo_color = Color(0.42745098, 1, 0, 1)
+albedo_texture = SubResource("NoiseTexture2D_jmmcx")
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_gg62s")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_twn0q"]
 material = SubResource("StandardMaterial3D_8ifl6")
@@ -36,6 +60,7 @@ shader_parameter/outline_width = 0.05
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dmtm4"]
+size = Vector3(0.17944336, 0.4855957, 0.5428467)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w16ng"]
 
@@ -68,6 +93,13 @@ size = Vector3(0.2, 0.1, 0.14)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_twn0q"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
+[sub_resource type="Curve" id="Curve_f44mt"]
+_data = [Vector2(0, 0), 0.0, 0.5388648, 0, 0, Vector2(0.73248404, 0.7985318), 0.0, 0.0, 0, 0, Vector2(1, 1), -0.09567609, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_1s0h2"]
+curve = SubResource("Curve_f44mt")
+
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_al2iq"]
 panorama = ExtResource("5_1jq6i")
 
@@ -80,12 +112,17 @@ background_color = Color(0.53, 0.81, 0.92, 1)
 background_energy_multiplier = 0.31
 sky = SubResource("Sky_dmtm4")
 tonemap_mode = 2
+ssao_enabled = true
+ssao_power = 1.8467175
 glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.1244
 volumetric_fog_albedo = Color(0.7800554, 0.4478112, 5.7756904e-07, 1)
 volumetric_fog_anisotropy = 0.79
 volumetric_fog_sky_affect = 0.715
+adjustment_enabled = true
+adjustment_saturation = 1.3
+adjustment_color_correction = SubResource("CurveTexture_1s0h2")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_al2iq"]
 size = Vector3(10, 1, 1)
@@ -116,10 +153,11 @@ transform = Transform3D(0.994259, 0, 0, 0, 0.994259, 0, 0, 0, 0.994259, -4.17997
 mesh = SubResource("PlaneMesh_twn0q")
 
 [node name="maincharrigged" parent="." instance=ExtResource("2_8ifl6")]
-transform = Transform3D(0.16868426, -0.011973066, -0.98559743, 0.070801, 0.99749, 0, 0.9831236, -0.06978128, 0.16910872, -3.1340518, -0.031568, -0.406374)
+transform = Transform3D(0.16868426, -0.011973067, -0.98559755, 0.070801005, 0.9974901, -9.1790914e-10, 0.9831237, -0.06978129, 0.16910873, -3.1340518, -0.03156799, -0.406374)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3554548, -1.7799826)
+collision_layer = 5
 script = ExtResource("4_al2iq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
@@ -131,15 +169,17 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3tio3")
 mesh = ExtResource("3_twn0q")
 surface_material_override/0 = SubResource("ShaderMaterial_vdgl5")
 
+[node name="Skeleton3D" type="Skeleton3D" parent="RigidBody3D/MeshInstance3D"]
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4023641, -0.2825688, 1.7542357)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4654745, -0.14890182, 1.8816161)
 shape = SubResource("BoxShape3D_dmtm4")
 
 [node name="maincharrigged2" parent="." instance=ExtResource("2_8ifl6")]
-transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.28910822)
+transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.2891082)
 
 [node name="Water" type="MeshInstance3D" parent="."]
-transform = Transform3D(22.533588, 0, 0, 0, 1, 0, 0, 0, 38.794487, -1.6985617, 0, -0.023804307)
+transform = Transform3D(22.533588, 0, 0, 0, 1, 0, 0, 0, 38.794487, -0.4974723, 0, -0.023804307)
 mesh = SubResource("BoxMesh_dmtm4")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
@@ -152,10 +192,10 @@ mesh = SubResource("PlaneMesh_w16ng")
 shape = SubResource("ConcavePolygonShape3D_twn0q")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.03559715, -0.26849738, 0.96262246, 0, 0.96323293, 0.26866764, -0.9993662, -0.009563803, 0.034288347, 0.31714106, 1.2105271, 0.25745714)
+transform = Transform3D(1, 0, 0, 0, 0.96316254, 0.26891983, 0, -0.26891983, 0.96316254, 0.71935046, 1.2105271, 1.8233114)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.5929123, 0.48824954, -0.640365, -0.112810746, 0.8377407, 0.5342885, 0.79732585, -0.24454623, 0.55178666, 0, 5, 0)
+transform = Transform3D(0.59291244, 0.48824963, -0.640365, -0.11281077, 0.8377407, 0.5342885, 0.797326, -0.24454623, 0.5517866, 0, 5, 0)
 light_energy = 0.67
 shadow_enabled = true
 
@@ -203,7 +243,7 @@ shape = SubResource("BoxShape3D_ha8th")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.4981225)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22833657, -0.02264285, 3.0026498)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22833657, -0.02264285, -2.0429075)
 mesh = SubResource("BoxMesh_ha8th")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3"]
