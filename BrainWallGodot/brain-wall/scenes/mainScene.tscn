@@ -1,11 +1,10 @@
-[gd_scene load_steps=44 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=39 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
 [ext_resource type="PackedScene" uid="uid://by6t3bsb6eggk" path="res://scenes/Marker.tscn" id="2_hhxvm"]
-[ext_resource type="ArrayMesh" uid="uid://bhm8eqk5xw3kr" path="res://assets/maincharrigged.obj" id="3_twn0q"]
-[ext_resource type="Script" uid="uid://c8pjb8dafad15" path="res://scenes/rigid_body_3d.gd" id="4_al2iq"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
+[ext_resource type="PackedScene" uid="uid://cufp6hpuri0uo" path="res://assets/models/Eleven.glb" id="5_jmmcx"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
 [ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
 [ext_resource type="Shader" uid="uid://dvigqnwwgftj1" path="res://assets/shaders/outline.gdshader" id="7_3tio3"]
@@ -45,24 +44,6 @@ normal_texture = SubResource("NoiseTexture2D_gg62s")
 [sub_resource type="PlaneMesh" id="PlaneMesh_twn0q"]
 material = SubResource("StandardMaterial3D_8ifl6")
 size = Vector2(3, 1.5)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ha8th"]
-render_priority = 0
-shader = ExtResource("6_fp4eh")
-shader_parameter/steps = 2
-shader_parameter/base_color = Color(1, 0.8000001, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3tio3"]
-next_pass = SubResource("ShaderMaterial_ha8th")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vdgl5"]
-render_priority = 0
-shader = ExtResource("7_3tio3")
-shader_parameter/outline_width = 0.05
-shader_parameter/outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_dmtm4"]
-size = Vector3(0.17944336, 0.4855957, 0.5428467)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w16ng"]
 
@@ -164,25 +145,8 @@ mesh = SubResource("PlaneMesh_twn0q")
 [node name="maincharrigged" parent="." instance=ExtResource("2_8ifl6")]
 transform = Transform3D(0.16868426, -0.011973067, -0.98559755, 0.070801005, 0.9974901, -9.1790914e-10, 0.9831237, -0.06978129, 0.16910873, -3.1340518, -0.03156799, -0.406374)
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8281765, 0.85978997, 0.84861326)
-collision_layer = 5
-script = ExtResource("4_al2iq")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
-transform = Transform3D(-0.00092482206, 0, 0.06999389, 0, 0.07, 0, -0.06999389, 0, -0.00092482206, -0.4889076, -0.45323288, -0.43433714)
-mesh = ExtResource("3_twn0q")
-surface_material_override/0 = SubResource("StandardMaterial3D_3tio3")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D/MeshInstance3D"]
-mesh = ExtResource("3_twn0q")
-surface_material_override/0 = SubResource("ShaderMaterial_vdgl5")
-
-[node name="Skeleton3D" type="Skeleton3D" parent="RigidBody3D/MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4654745, -0.14890182, 1.8816161)
-shape = SubResource("BoxShape3D_dmtm4")
+[node name="Eleven" parent="." instance=ExtResource("5_jmmcx")]
+transform = Transform3D(0.1, 0, 2.3283064e-10, 0, 0.09999998, 0, -2.3283064e-10, 0, 0.1, -0.20787948, 0.15082377, 0.7695721)
 
 [node name="maincharrigged2" parent="." instance=ExtResource("2_8ifl6")]
 transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.2891082)

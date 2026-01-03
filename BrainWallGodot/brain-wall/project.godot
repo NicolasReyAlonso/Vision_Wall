@@ -14,12 +14,3 @@ config/name="BrainWall"
 run/main_scene="uid://cfee2v6mhn08g"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
-
-[autoload]
-
-MediaPipeExternalFiles="*res://addons/GDMP/MediaPipeExternalFiles.gd"
-GDMPAndroid="*res://addons/GDMP/GDMPAndroid.gd"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/GDMP/plugin.cfg")
