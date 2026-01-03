@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
 [ext_resource type="PackedScene" uid="uid://by6t3bsb6eggk" path="res://scenes/Marker.tscn" id="2_hhxvm"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
-[ext_resource type="PackedScene" uid="uid://cufp6hpuri0uo" path="res://assets/models/Eleven.glb" id="5_jmmcx"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
 [ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
 [ext_resource type="Shader" uid="uid://dvigqnwwgftj1" path="res://assets/shaders/outline.gdshader" id="7_3tio3"]
@@ -13,6 +12,7 @@
 [ext_resource type="Script" uid="uid://blisl35nko52s" path="res://scenes/wall.gd" id="9_1xypn"]
 [ext_resource type="Script" uid="uid://sgh6f385n4lf" path="res://scenes/character_body_3d.gd" id="10_2n1xb"]
 [ext_resource type="ArrayMesh" uid="uid://0omb6vj0e82b" path="res://assets/models/Coliseum.obj" id="14_jmmcx"]
+[ext_resource type="PackedScene" uid="uid://bmmg2remx0ygr" path="res://assets/models/Eleven/eleven.tscn" id="14_vdgl5"]
 [ext_resource type="Texture2D" uid="uid://dysayoi4g77em" path="res://assets/models/Colitext.png" id="15_vdgl5"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3tio3"]
@@ -125,6 +125,9 @@ shader = ExtResource("6_fp4eh")
 shader_parameter/steps = 4
 shader_parameter/base_color = Color(0.8980392, 0.87058824, 0.8666667, 1)
 shader_parameter/albedo_texture = ExtResource("15_vdgl5")
+shader_parameter/texture_influence = 100.0
+shader_parameter/saturation = 100.0
+shader_parameter/shadow_brightness = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gg62s"]
 render_priority = 0
@@ -144,9 +147,6 @@ mesh = SubResource("PlaneMesh_twn0q")
 
 [node name="maincharrigged" parent="." instance=ExtResource("2_8ifl6")]
 transform = Transform3D(0.16868426, -0.011973067, -0.98559755, 0.070801005, 0.9974901, -9.1790914e-10, 0.9831237, -0.06978129, 0.16910873, -3.1340518, -0.03156799, -0.406374)
-
-[node name="Eleven" parent="." instance=ExtResource("5_jmmcx")]
-transform = Transform3D(0.1, 0, 2.3283064e-10, 0, 0.09999998, 0, -2.3283064e-10, 0, 0.1, -0.20787948, 0.15082377, 0.7695721)
 
 [node name="maincharrigged2" parent="." instance=ExtResource("2_8ifl6")]
 transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.2891082)
@@ -220,6 +220,9 @@ surface_material_override/0 = SubResource("ShaderMaterial_0eirs")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0058689117, 0.008272171, 0.009800434)
 mesh = ExtResource("14_jmmcx")
 surface_material_override/0 = SubResource("ShaderMaterial_gg62s")
+
+[node name="Eleven" parent="Node3D/MeshInstance3D" instance=ExtResource("14_vdgl5")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.4223467, 0.55327004, -0.4585584)
 
 [node name="Humans" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, -0.83290803)

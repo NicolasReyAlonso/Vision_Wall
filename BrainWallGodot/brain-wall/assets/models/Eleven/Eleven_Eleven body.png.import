@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwc7plwcdlcuj"
-path.s3tc="res://.godot/imported/Eleven_Cylinder_9.png-bfbe57da738686fbe64392ad9507846b.s3tc.ctex"
+uid="uid://c6bmql64d8hy3"
+path.s3tc="res://.godot/imported/Eleven_Eleven body.png-4b6e1337d43fe49ae7641df64beb1712.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "a5457f12933d28b6f672a293a50f06a0"
+"md5": "1f49df8a85f52b6de7e9041b42306ef7"
 }
 
 [deps]
 
-source_file="res://assets/models/Eleven_Cylinder_9.png"
-dest_files=["res://.godot/imported/Eleven_Cylinder_9.png-bfbe57da738686fbe64392ad9507846b.s3tc.ctex"]
+source_file="res://assets/models/Eleven/Eleven_Eleven body.png"
+dest_files=["res://.godot/imported/Eleven_Eleven body.png-4b6e1337d43fe49ae7641df64beb1712.s3tc.ctex"]
 
 [params]
 

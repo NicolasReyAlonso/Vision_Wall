@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqh4k2akgbuui"
-path.s3tc="res://.godot/imported/Eleven_Cylinder_3.png-98b9631360ad48303c377da40ae6fb02.s3tc.ctex"
+uid="uid://brcmbfyhjl10m"
+path.s3tc="res://.godot/imported/Eleven_Eleven_3.png-ee76b246fe8b7485dc0dbe775de3c46e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://assets/models/Eleven_Cylinder_3.png"
-dest_files=["res://.godot/imported/Eleven_Cylinder_3.png-98b9631360ad48303c377da40ae6fb02.s3tc.ctex"]
+source_file="res://assets/models/Eleven/Eleven_Eleven_3.png"
+dest_files=["res://.godot/imported/Eleven_Eleven_3.png-ee76b246fe8b7485dc0dbe775de3c46e.s3tc.ctex"]
 
 [params]
 

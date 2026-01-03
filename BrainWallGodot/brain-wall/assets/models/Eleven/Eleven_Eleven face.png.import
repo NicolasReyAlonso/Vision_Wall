@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnhfj5dhuc6ml"
-path.s3tc="res://.godot/imported/Eleven_Cube Base Color.png-f056342c070142d422d462570f8f105b.s3tc.ctex"
+uid="uid://s7kj8w1d38u0"
+path.s3tc="res://.godot/imported/Eleven_Eleven face.png-a19ba71582cc7cca921e41576a1e36ed.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "1f49df8a85f52b6de7e9041b42306ef7"
+"md5": "7f7f74957506a77d26dcfb8717476409"
 }
 
 [deps]
 
-source_file="res://assets/models/Eleven_Cube Base Color.png"
-dest_files=["res://.godot/imported/Eleven_Cube Base Color.png-f056342c070142d422d462570f8f105b.s3tc.ctex"]
+source_file="res://assets/models/Eleven/Eleven_Eleven face.png"
+dest_files=["res://.godot/imported/Eleven_Eleven face.png-a19ba71582cc7cca921e41576a1e36ed.s3tc.ctex"]
 
 [params]
 
