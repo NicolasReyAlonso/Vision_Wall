@@ -59,25 +59,24 @@ func load_character(char: String):
 	match char:
 		"saw":
 			print("Cargando Saw...")
-			# Cargar modelo de Saw si existe
 			if ResourceLoader.exists("res://assets/models/Saw.glb"):
 				var scene = load("res://assets/models/Saw.glb")
-				eleven_scene = scene
+				player_scene = scene
 		"et":
 			print("Cargando ET...")
 			if ResourceLoader.exists("res://assets/models/ET.glb"):
 				var scene = load("res://assets/models/ET.glb")
-				eleven_scene = scene
+				player_scene = scene
 		"eleven":
 			print("Cargando Eleven...")
 			if ResourceLoader.exists("res://assets/models/Eleven.glb"):
 				var scene = load("res://assets/models/Eleven.glb")
-				eleven_scene = scene
+				player_scene = scene
 		"homer":
 			print("Cargando Homer...")
 			if ResourceLoader.exists("res://assets/models/Homer.glb"):
 				var scene = load("res://assets/models/Homer.glb")
-				eleven_scene = scene
+				player_scene = scene
 		_:
 			print("Personaje no reconocido: ", char)
 
