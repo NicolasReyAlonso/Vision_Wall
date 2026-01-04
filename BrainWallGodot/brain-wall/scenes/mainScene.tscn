@@ -1,7 +1,8 @@
-[gd_scene load_steps=38 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=39 format=3 uid="uid://bnl20wr3lqhow"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
+[ext_resource type="PackedScene" uid="uid://bnagcupcutaa7" path="res://assets/models/Eleven/Eleven.glb" id="2_jmmcx"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
 [ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
@@ -10,9 +11,7 @@
 [ext_resource type="Shader" uid="uid://cb1agqsu2lkix" path="res://assets/shaders/toon_water.gdshader" id="8_jmmcx"]
 [ext_resource type="Script" uid="uid://blisl35nko52s" path="res://scenes/wall.gd" id="9_1xypn"]
 [ext_resource type="Script" uid="uid://sgh6f385n4lf" path="res://scenes/character_body_3d.gd" id="10_2n1xb"]
-[ext_resource type="PackedScene" uid="uid://bmmg2remx0ygr" path="res://assets/models/Eleven/eleven.tscn" id="14_hnm5q"]
 [ext_resource type="ArrayMesh" uid="uid://0omb6vj0e82b" path="res://assets/models/Coliseum.obj" id="14_jmmcx"]
-[ext_resource type="PackedScene" uid="uid://bsdlydvjsdnqr" path="res://assets/models/Eleven/Eleven.glb" id="14_vdgl5"]
 [ext_resource type="PackedScene" uid="uid://1q5wn6agbify" path="res://assets/models/Eleven/eleven.tscn" id="14_vdgl5"]
 [ext_resource type="Texture2D" uid="uid://dysayoi4g77em" path="res://assets/models/Colitext.png" id="15_vdgl5"]
 
@@ -136,9 +135,9 @@ shader = ExtResource("7_3tio3")
 shader_parameter/outline_width = 0.03
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
-[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer")]
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer", "nodevec")]
 script = ExtResource("1_ki6c0")
-eleven_scene = ExtResource("14_vdgl5")
+eleven_scene = ExtResource("2_jmmcx")
 audioStreamPlayer = NodePath("AudioStreamPlayer3D")
 nodevec = NodePath("Humans")
 model_scale = 0.2
@@ -223,7 +222,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0058689117, 0.008272171, 0.
 mesh = ExtResource("14_jmmcx")
 surface_material_override/0 = SubResource("ShaderMaterial_gg62s")
 
-[node name="Eleven" parent="Node3D/MeshInstance3D" instance=ExtResource("14_hnm5q")]
+[node name="Eleven" parent="Node3D/MeshInstance3D" instance=ExtResource("14_vdgl5")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.4223467, 0.55327004, -0.4585584)
 
 [node name="Humans" type="Node3D" parent="."]
