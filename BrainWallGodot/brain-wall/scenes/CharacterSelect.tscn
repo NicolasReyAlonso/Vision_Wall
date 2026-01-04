@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs861n2lcmysi"]
+
+[ext_resource type="Script" uid="uid://8c1kqn8ffo1f" path="res://scenes/character_select.gd" id="1_sr2wn"]
+
+[node name="CharacterSelect" type="Control"]
+custom_minimum_size = Vector2(800, 600)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sr2wn")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 720.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_direction = 2
+layout_mode = 2
+
+[node name="VBoxPrincipal" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TituloLabel" type="Label" parent="MarginContainer/VBoxPrincipal"]
+layout_mode = 2
+
+[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxPrincipal"]
+layout_mode = 2
+
+[node name="BotonesContainer" type="VBoxContainer" parent="MarginContainer/VBoxPrincipal"]
+layout_mode = 2
+
+[node name="SawButton" type="Button" parent="MarginContainer/VBoxPrincipal/BotonesContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Saw"
+
+[node name="ElevenButton" type="Button" parent="MarginContainer/VBoxPrincipal/BotonesContainer"]
+layout_mode = 2
+text = "Eleven"
+
+[node name="HomerButton" type="Button" parent="MarginContainer/VBoxPrincipal/BotonesContainer"]
+layout_mode = 2
+text = "Homer"
+
+[node name="ETButton" type="Button" parent="MarginContainer/VBoxPrincipal/BotonesContainer"]
+layout_mode = 2
+text = "ET"

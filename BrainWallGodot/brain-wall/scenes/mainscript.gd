@@ -52,6 +52,19 @@ const PLAYER_COLORS = [
 ]
 
 func _ready():
+	var character1 = "eleven"
+	var character2 = "eleven"
+	
+	if get_tree().root.has_meta("personaje1"):
+		character1 = get_tree().root.get_meta("personaje1")
+	if get_tree().root.has_meta("personaje2"):
+		character2 = get_tree().root.get_meta("personaje2")
+	
+	print("Jugador 1: ", character1)
+	print("Jugador 2: ", character2)
+	load_character(character1)
+	load_character(character2)
+	
 	var err = socket.connect_to_url("ws://localhost:8765")
 	playBasicMusic()
 	offset = nodevec.global_position 
@@ -64,6 +77,31 @@ func playBasicMusic():
 	var music_player = audioStreamPlayer
 	music_player.play()  # Comienza la música
 
+func load_character(char: String):
+	match char:
+		"saw":
+			print("Cargando Saw...")
+			# Cargar modelo de Saw si existe
+			if ResourceLoader.exists("res://assets/models/Saw.glb"):
+				var scene = load("res://assets/models/Saw.glb")
+				eleven_scene = scene
+		"et":
+			print("Cargando ET...")
+			if ResourceLoader.exists("res://assets/models/ET.glb"):
+				var scene = load("res://assets/models/ET.glb")
+				eleven_scene = scene
+		"eleven":
+			print("Cargando Eleven...")
+			if ResourceLoader.exists("res://assets/models/Eleven.glb"):
+				var scene = load("res://assets/models/Eleven.glb")
+				eleven_scene = scene
+		"homer":
+			print("Cargando Homer...")
+			if ResourceLoader.exists("res://assets/models/Homer.glb"):
+				var scene = load("res://assets/models/Homer.glb")
+				eleven_scene = scene
+		_:
+			print("Personaje no reconocido: ", char)
 
 func _process(delta):
 	socket.poll()

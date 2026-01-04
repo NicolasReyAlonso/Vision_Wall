@@ -11,6 +11,6 @@ config_version=5
 [application]
 
 config/name="BrainWall"
-run/main_scene="uid://cfee2v6mhn08g"
+run/main_scene="uid://cs861n2lcmysi"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
