@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://1q5wn6agbify"]
+
+[ext_resource type="PackedScene" uid="uid://bnagcupcutaa7" path="res://assets/models/Eleven/Eleven.glb" id="1_h0ygo"]
+
+[node name="Eleven" instance=ExtResource("1_h0ygo")]
