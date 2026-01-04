@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://saw123456"]
+
+[ext_resource type="PackedScene" path="res://assets/models/Saw.glb" id="1_saw"]
+
+[node name="Saw" instance=ExtResource("1_saw")]

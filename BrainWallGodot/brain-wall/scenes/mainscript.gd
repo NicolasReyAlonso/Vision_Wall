@@ -39,8 +39,28 @@ func _ready():
 	
 	print("Jugador 1: ", character1)
 	print("Jugador 2: ", character2)
+	
+	# Cargar personaje 1
 	load_character(character1)
+	if player_scene:
+		var player1 = player_scene.instantiate()
+		player1.scale = Vector3.ONE * player_scale
+		player1.position = Vector3(-1, 0, 0)
+		add_child(player1)
+		players.append(player1)
+		apply_color_to_player(player1, PLAYER_COLORS[0])
+		print("Jugador 1 instanciado: ", character1)
+	
+	# Cargar personaje 2
 	load_character(character2)
+	if player_scene:
+		var player2 = player_scene.instantiate()
+		player2.scale = Vector3.ONE * player_scale
+		player2.position = Vector3(1, 0, 0)
+		add_child(player2)
+		players.append(player2)
+		apply_color_to_player(player2, PLAYER_COLORS[1])
+		print("Jugador 2 instanciado: ", character2)
 	
 	var err = socket.connect_to_url("ws://localhost:8765")
 	if err != OK:
@@ -59,23 +79,23 @@ func load_character(char: String):
 	match char:
 		"saw":
 			print("Cargando Saw...")
-			if ResourceLoader.exists("res://assets/models/Saw.glb"):
-				var scene = load("res://assets/models/Saw.glb")
+			if ResourceLoader.exists("res://assets/Characters/saw.tscn"):
+				var scene = load("res://assets/Characters/saw.tscn")
 				player_scene = scene
 		"et":
 			print("Cargando ET...")
-			if ResourceLoader.exists("res://assets/models/ET.glb"):
-				var scene = load("res://assets/models/ET.glb")
+			if ResourceLoader.exists("res://assets/Characters/et.tscn"):
+				var scene = load("res://assets/Characters/et.tscn")
 				player_scene = scene
 		"eleven":
 			print("Cargando Eleven...")
-			if ResourceLoader.exists("res://assets/models/Eleven.glb"):
-				var scene = load("res://assets/models/Eleven.glb")
+			if ResourceLoader.exists("res://assets/Characters/eleven.tscn"):
+				var scene = load("res://assets/Characters/eleven.tscn")
 				player_scene = scene
 		"homer":
 			print("Cargando Homer...")
-			if ResourceLoader.exists("res://assets/models/Homer.glb"):
-				var scene = load("res://assets/models/Homer.glb")
+			if ResourceLoader.exists("res://assets/Characters/homer.tscn"):
+				var scene = load("res://assets/Characters/homer.tscn")
 				player_scene = scene
 		_:
 			print("Personaje no reconocido: ", char)
