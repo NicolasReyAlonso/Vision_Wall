@@ -139,8 +139,9 @@ shader_parameter/outline_color = Color(0, 0, 0, 1)
 script = ExtResource("1_ki6c0")
 player_scene = ExtResource("2_jmmcx")
 audioStreamPlayer = NodePath("AudioStreamPlayer3D")
+offset = Vector3(0, 0, -5)
 mirror_mode = false
-model_scale = 0.5
+model_scale = 0.2
 
 [node name="CameraPlane" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.994259, 0, 0, 0, 0.994259, 0, 0, 0, 0.994259, -4.1799717, 0, 0)

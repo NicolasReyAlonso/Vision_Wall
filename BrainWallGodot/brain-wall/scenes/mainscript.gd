@@ -10,6 +10,7 @@ extends Node3D
 @export var mirror_mode: bool = true             # Espejo (true = movimiento espejo)
 @export var model_scale: float = 1.0             # Escala adicional del personaje
 @export var movement_smoothing: float = 0.2      # Suavizado del movimiento
+@export var rotation_smoothing: float = 0.08     # Suavizado de rotación
 
 var socket := WebSocketPeer.new()
 var players_data: Array = []
@@ -30,6 +31,7 @@ const PLAYER_COLORS = [
 
 # Mapeo de huesos (Prioridad al proporcionado por el usuario)
 const BONE_NAMES = {
+	"spine": "spine",
 	"upper_arm_L": "upper_arm.L",
 	"forearm_L": "forearm.L", 
 	"upper_arm_R": "upper_arm.R",
@@ -42,6 +44,7 @@ const BONE_NAMES = {
 
 # Mapeo alternativo (Español/Mixamo a veces)
 const BONE_NAMES_ES = {
+	"spine": "mixamorig:Spine",
 	"upper_arm_L": "Brazo.L",
 	"forearm_L": "Mano.L", 
 	"upper_arm_R": "Brazo.R",
@@ -221,9 +224,19 @@ func update_player(player_idx: int, pose: Array):
 	if raw_height < 0.001:
 		raw_height = 0.001
 
-	var normal_scale = target_height / raw_height
-
-	# Posición base del modelo (usar centro de caderas)
+	# --- NUEVA LÓGICA DE MOVIMIENTO Z (Brain Wall) ---
+	# En lugar de escalar el personaje, movemos su posición Z basándonos en la altura (distancia)
+	# raw_height varía aprox entre 0.2 (lejos) y 0.9 (cerca)
+	
+	# Factor de profundidad: Ajustar para que el personaje se mueva lo suficiente
+	var z_distance_factor = 5.0 
+	# Offset base Z: Ajustar para la posición inicial
+	var z_base_offset = 0.0
+	
+	# Calculamos Z: Si raw_height es grande (cerca), Z es positivo (hacia la cámara/muro)
+	# Si raw_height es pequeño (lejos), Z es negativo (hacia el fondo)
+	var z_from_distance = (raw_height - 0.5) * z_distance_factor
+	
 	var hip_left = pose[7]
 	var hip_right = pose[8]
 	var hip_x = ((hip_left["x"] + hip_right["x"]) / 2.0 - 0.5) * 2.0
@@ -235,22 +248,29 @@ func update_player(player_idx: int, pose: Array):
 	# Invertir X si modo espejo está activado
 	if mirror_mode:
 		hip_x = -hip_x
-
+	
+	var final_z = z_from_distance + hip_z + offset.z + z_base_offset
+	
+	# Posición base
+	# Multiplicamos X e Y por un factor fijo para cubrir el área de juego
+	var play_area_scale = 3.0 
+	
 	var base_pos = Vector3(
-		hip_x * normal_scale * scale_factor,
-		hip_y * normal_scale * scale_factor,
-		hip_z
-	) + offset
+		hip_x * play_area_scale,
+		hip_y * play_area_scale + 1.0, # +1.0 para levantar un poco del suelo si es necesario
+		final_z
+	)
 
 	# Usar lerp para suavizar movimiento global
 	model.global_position = model.global_position.lerp(base_pos, movement_smoothing)
 	
-	# Aplicar escala adicional del modelo
+	# Escala FIJA del modelo
 	var safe_model_scale = model_scale
 	if safe_model_scale <= 0.001:
 		safe_model_scale = 1.0 
 		
-	var final_scale = normal_scale * scale_factor * safe_model_scale
+	# Aplicamos solo la escala base, sin el factor de distancia
+	var final_scale = scale_factor * safe_model_scale
 	model.scale = Vector3(final_scale, final_scale, final_scale)
 
 	# Calcular posiciones 3D de todos los keypoints
@@ -269,11 +289,69 @@ func update_player(player_idx: int, pose: Array):
 		
 		positions.append(Vector3(x, y, z))
 
+	# --- ROTACIÓN DEL CUERPO (Eje Y) ---
+	# Calcular ángulo de los hombros para rotar todo el personaje
+	var p_left_shoulder = positions[1]
+	var p_right_shoulder = positions[2]
+	var shoulder_dir = p_right_shoulder - p_left_shoulder
+	
+	# Evitar rotaciones bruscas si los datos no son claros
+	if shoulder_dir.length() > 0.1:
+		var target_rot_y = atan2(shoulder_dir.z, shoulder_dir.x) + PI
+		# Ajuste de offset si es necesario (depende de la orientación del modelo)
+		# Asumimos que el modelo mira hacia +Z por defecto
+		model.rotation.y = lerp_angle(model.rotation.y, target_rot_y, rotation_smoothing)
+
 	# Animar el esqueleto
 	if skeleton != null:
 		animate_skeleton(skeleton, positions)
 
 func animate_skeleton(skeleton: Skeleton3D, positions: Array):
+	# Obtener la orientación global del esqueleto para compensar la rotación del nodo padre
+	var skeleton_basis_inv = skeleton.global_transform.basis.orthonormalized().inverse()
+
+	# --- Rotación del Torso/Columna ---
+	# Calculamos el vector desde el centro de las caderas al centro de los hombros
+	var hip_center = (positions[7] + positions[8]) / 2.0
+	var shoulder_center = (positions[1] + positions[2]) / 2.0
+	var spine_dir_world = (shoulder_center - hip_center).normalized()
+	
+	# Convertir dirección del mundo a espacio local del esqueleto
+	var spine_dir = (skeleton_basis_inv * spine_dir_world).normalized()
+	
+	if spine_dir.length() > 0.001:
+		var spine_bone_name = BONE_NAMES["spine"]
+		var spine_idx = skeleton.find_bone(spine_bone_name)
+		if spine_idx < 0:
+			spine_bone_name = BONE_NAMES_ES["spine"]
+			spine_idx = skeleton.find_bone(spine_bone_name)
+			
+		if spine_idx >= 0:
+			# Obtener transformación del padre (normalmente Hips/Pelvis)
+			var parent_idx = skeleton.get_bone_parent(spine_idx)
+			var parent_global_basis = Basis.IDENTITY
+			if parent_idx >= 0:
+				parent_global_basis = skeleton.get_bone_global_pose(parent_idx).basis
+			
+			# Convertir a local
+			var target_local_dir = (parent_global_basis.inverse() * spine_dir).normalized()
+			
+			# Pose de descanso (asumimos Y+ es arriba a lo largo de la columna)
+			var rest_pose = skeleton.get_bone_rest(spine_idx)
+			var rest_dir = rest_pose.basis.y.normalized()
+			
+			# Calcular rotación
+			var rotation_quat = rotation_from_to(rest_dir, target_local_dir)
+			var final_basis = Basis(rotation_quat) * rest_pose.basis
+			
+			# Aplicar suavizado
+			var current_pose = skeleton.get_bone_pose(spine_idx)
+			var current_quat = current_pose.basis.get_rotation_quaternion()
+			var target_quat = final_basis.get_rotation_quaternion()
+			var smoothed_quat = current_quat.slerp(target_quat, 0.5)
+			
+			skeleton.set_bone_pose(spine_idx, Transform3D(Basis(smoothed_quat), current_pose.origin))
+
 	# Usar un orden específico para respetar la jerarquía
 	for limb_name in UPDATE_ORDER:
 		var bone_name = BONE_NAMES[limb_name]
@@ -291,11 +369,14 @@ func animate_skeleton(skeleton: Skeleton3D, positions: Array):
 		var start_pos = positions[indices[0]]
 		var end_pos = positions[indices[1]]
 		
-		# Dirección objetivo del hueso en espacio del modelo
+		# Dirección objetivo del hueso en espacio del mundo
 		var target_world_dir = (end_pos - start_pos).normalized()
 		
 		if target_world_dir.length() < 0.001:
 			continue
+			
+		# Convertir a espacio del esqueleto (compensar rotación del cuerpo)
+		var target_model_dir = (skeleton_basis_inv * target_world_dir).normalized()
 		
 		# Obtener la transformación global (Model Space) del padre
 		var parent_idx = skeleton.get_bone_parent(bone_idx)
@@ -304,7 +385,7 @@ func animate_skeleton(skeleton: Skeleton3D, positions: Array):
 			parent_global_basis = skeleton.get_bone_global_pose(parent_idx).basis
 		
 		# Convertir la dirección objetivo al espacio local del padre
-		var target_local_dir = (parent_global_basis.inverse() * target_world_dir).normalized()
+		var target_local_dir = (parent_global_basis.inverse() * target_model_dir).normalized()
 		
 		# Obtener la pose de descanso (Rest Pose)
 		var rest_pose = skeleton.get_bone_rest(bone_idx)
