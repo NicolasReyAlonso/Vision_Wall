@@ -5,14 +5,46 @@ var personaje_jugador1 = ""
 var personaje_jugador2 = ""
 var seleccionando_jugador = 1  # 1 o 2
 
+# Audio players para efectos de sonido
+var audio_click: AudioStreamPlayer
+var audio_hover: AudioStreamPlayer
+
 func _ready():
-	$MarginContainer/VBoxPrincipal/BotonesContainer/SawButton.pressed.connect(_on_saw_pressed)
-	$MarginContainer/VBoxPrincipal/BotonesContainer/ETButton.pressed.connect(_on_et_pressed)
-	$MarginContainer/VBoxPrincipal/BotonesContainer/ElevenButton.pressed.connect(_on_eleven_pressed)
-	$MarginContainer/VBoxPrincipal/BotonesContainer/HomerButton.pressed.connect(_on_homer_pressed)
+	# Crear AudioStreamPlayers para efectos de sonido
+	audio_click = AudioStreamPlayer.new()
+	add_child(audio_click)
+	audio_click.stream = load("res://assets/SoundEffects/soundEffect_buttonClick.ogg")
+	
+	audio_hover = AudioStreamPlayer.new()
+	add_child(audio_hover)
+	audio_hover.stream = load("res://assets/SoundEffects/soundEffect_buttonHover.ogg")
+	
+	# Conectar eventos de los botones
+	var buttons = [
+		$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/SawButton,
+		$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/ETButton,
+		$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/ElevenButton,
+		$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/HomerButton
+	]
+	
+	$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/SawButton.pressed.connect(_on_saw_pressed)
+	$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/ETButton.pressed.connect(_on_et_pressed)
+	$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/ElevenButton.pressed.connect(_on_eleven_pressed)
+	$MarginContainer/VBoxPrincipal/BotonesContainer/GridContainer/HomerButton.pressed.connect(_on_homer_pressed)
+	
+	# Conectar eventos de hover y click a todos los botones
+	for button in buttons:
+		button.mouse_entered.connect(_on_button_hover)
+		button.pressed.connect(_on_button_click)
 	
 	# Actualizar texto inicial
 	actualizar_titulo()
+
+func _on_button_hover():
+	audio_hover.play()
+
+func _on_button_click():
+	audio_click.play()
 
 func actualizar_titulo():
 	var titulo = $MarginContainer/VBoxPrincipal/TituloLabel

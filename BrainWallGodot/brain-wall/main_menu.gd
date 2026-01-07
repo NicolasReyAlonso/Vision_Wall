@@ -14,7 +14,7 @@ func _process(delta: float) -> void:
 func _on_play_button_pressed() -> void:
 	soundEffectclick.pitch_scale = 1
 	soundEffectclick.play()
-	get_tree().change_scene_to_file("res://scenes/mainScene.tscn")
+	get_tree().change_scene_to_file("res://scenes/CharacterSelect.tscn")
 	pass # Replace with function body.
 
 
