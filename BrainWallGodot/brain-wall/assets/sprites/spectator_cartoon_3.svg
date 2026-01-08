@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Variant 3: yellow shirt, hat -->
+  <g id="body" transform="translate(0,40)">
+    <ellipse cx="256" cy="360" rx="110" ry="70" fill="#ffd24a" filter="url(#shadow)"/>
+    <rect x="180" y="260" width="152" height="160" rx="36" ry="36" fill="#ffd24a"/>
+    <ellipse cx="140" cy="320" rx="28" ry="44" fill="#f5d1b0"/>
+    <ellipse cx="372" cy="320" rx="28" ry="44" fill="#f5d1b0"/>
+  </g>
+
+  <g id="legs">
+    <rect x="206" y="410" width="36" height="70" rx="10" fill="#222222"/>
+    <rect x="270" y="410" width="36" height="70" rx="10" fill="#222222"/>
+  </g>
+
+  <g id="head">
+    <circle cx="256" cy="180" r="84" fill="#f5d1b0" stroke="#e6b18a" stroke-width="2"/>
+    <ellipse cx="232" cy="170" rx="12" ry="16" fill="#ffffff"/>
+    <ellipse cx="280" cy="170" rx="12" ry="16" fill="#ffffff"/>
+    <circle cx="232" cy="174" r="6" fill="#1f1f1f"/>
+    <circle cx="280" cy="174" r="6" fill="#1f1f1f"/>
+    <path d="M230 208 Q256 228 282 208" stroke="#7a3a1f" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g id="hat">
+    <ellipse cx="256" cy="122" rx="96" ry="32" fill="#3b3b3b"/>
+    <rect x="192" y="96" width="128" height="40" rx="12" fill="#3b3b3b"/>
+  </g>
+
+  <ellipse cx="256" cy="520" rx="140" ry="28" fill="#000" fill-opacity="0.12"/>
+</svg>
