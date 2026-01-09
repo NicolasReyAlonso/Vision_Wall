@@ -4,6 +4,7 @@ extends Node3D
 @export var target_height: float = 2.0   # altura deseada en metros dentro del juego
 @export var player_scene: PackedScene  # Escena por defecto (fallback)
 @export var audioStreamPlayer: AudioStreamPlayer3D
+@export var audioLoop: AudioStreamPlayer3D
 @export var offset: Vector3 = Vector3.ZERO
 @export var scale_factor: float = 0.7            # Escala global
 @export var depth_scale: float = 2.0             # Escala para la profundidad (Z)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=33 format=3 uid="uid://g2nkc5owg1uh"]
+[gd_scene load_steps=34 format=3 uid="uid://g2nkc5owg1uh"]
 
 [ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://Scripts/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://bnagcupcutaa7" path="res://assets/models/Eleven/Eleven.glb" id="2_jmmcx"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
-[ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
+[ext_resource type="AudioStream" uid="uid://dofau357kyns" path="res://assets/music/intro.mp3" id="5_hnm5q"]
 [ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
+[ext_resource type="AudioStream" uid="uid://nfm0nxcsnk88" path="res://assets/music/loop.mp3" id="6_hnm5q"]
 [ext_resource type="Shader" uid="uid://dvigqnwwgftj1" path="res://assets/shaders/outline.gdshader" id="7_3tio3"]
 [ext_resource type="Shader" uid="uid://cb1agqsu2lkix" path="res://assets/shaders/toon_water.gdshader" id="8_jmmcx"]
 [ext_resource type="Texture2D" uid="uid://dkih361pw8k6c" path="res://assets/sprites/spectator_cartoon.svg" id="10_2n1xb"]
@@ -115,10 +116,11 @@ shader = ExtResource("7_3tio3")
 shader_parameter/outline_width = 0.03
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
-[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer")]
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer", "audioLoop")]
 script = ExtResource("1_ki6c0")
 player_scene = ExtResource("2_jmmcx")
-audioStreamPlayer = NodePath("AudioStreamPlayer3D")
+audioStreamPlayer = NodePath("Intro")
+audioLoop = NodePath("Loop")
 offset = Vector3(0, 0, -5)
 mirror_mode = false
 model_scale = 0.2
@@ -140,8 +142,13 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1jq6i")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("5_w16ng")
+[node name="Intro" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_hnm5q")
+
+[node name="Loop" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7252903e-09, 0, -1.1920929e-07)
+stream = ExtResource("6_hnm5q")
+parameters/looping = true
 
 [node name="Node3D" type="Node3D" parent="."]
 
