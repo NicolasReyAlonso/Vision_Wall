@@ -1,0 +1,31 @@
+0:00–0:05 — Gancho
+
+Voz: "¿Listo para desafiar a la pared con sólo tu cuerpo?"
+Plano: Logo del juego "Vision Wall" + música enérgica.
+0:06–0:20 — Presentación y contexto (función principal)
+
+Voz: "Vision Wall es un juego de acción que usa visión por computador para traducir tus poses en movimiento real. Detecta tu 
+postura en tiempo real y genera retos físicos."
+Plano: Captura de la cámara con overlay de esqueleto/landmarks + gameplay mostrando la pared.
+0:21–0:40 — Funciones clave (breves)
+
+Voz: "Funciona con seguimiento de pose, y a través del motor de colisiones de godot, evaluamos si se ha chocado o ha pasado por
+el hueco de la pared. Este juego lo hemos enfocado además como un party game, focalizandonos en la diversión."
+Plano: Rápidos recortes: 1) pantalla con landmarks, 2) menú de selección de personaje, 3) wall generator en acción, 4) marcador/score subiendo.
+0:41–1:00 — Cómo se juega (pasos)
+
+Voz: "Jugar es sencillo: calibras tu cámara, y pasa por el muro, así de facil. Asegurate de tener espacio 
+suficiente antes de jugar, noqueremos accidentes. 
+Plano: Demo paso a paso: calibración → elegir nivel → jugador resolviendo 2–3 obstáculos.
+1:01–1:10 — Cierre / llamada a la acción (para la asignatura)
+
+Para el desarrollo de este software hemos utilizado principalmente godot y python ya que ambos tienen soporte para 
+websockets y nos permitia utilizar mediapipe y así posibilitar el desarrollo del videojuego
+
+además hemos utilizado vs code para la gestión del proyecto, blender para modelaje 3d, kdenlive para la edición vídeo,
+krita para los dibujos, gimp para la manipulación de imágenes, audacity para la grabación de audio, obs studio para
+la captura de video y lmms para la creación de música.
+
+Voz: "Vision Wall — una aplicación práctica de visión por computador. Desarrollado por Nicolás Rey Alonso y Wafa Azdad Triki. 
+Pruébalo y mueve tu cuerpo para ganar."
+Plano: Créditos breves + enlace o nombre del proyecto + fade out.
