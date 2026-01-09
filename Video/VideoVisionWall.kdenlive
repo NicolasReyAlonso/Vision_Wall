@@ -233,14 +233,66 @@
   <property name="set.test_image">0</property>
  </chain>
  <playlist id="playlist4">
-  <entry producer="chain2" in="00:00:03.160" out="00:00:25.360">
+  <entry producer="chain2" in="00:00:03.160" out="00:00:04.360">
    <property name="kdenlive:id">5</property>
+   <property name="kdenlive:activeeffect">1</property>
+   <filter id="filter7">
+    <property name="version">0.1</property>
+    <property name="mlt_service">frei0r.scale0tilt</property>
+    <property name="kdenlive_id">frei0r.scale0tilt</property>
+    <property name="Clip left">00:00:03.160=0.0427083</property>
+    <property name="Clip right">00:00:03.160=0</property>
+    <property name="Clip top">00:00:03.160=0.219444</property>
+    <property name="Clip bottom">00:00:03.160=0</property>
+    <property name="Scale X">00:00:03.160=0.51</property>
+    <property name="Scale Y">00:00:03.160=0.5</property>
+    <property name="Tilt X">00:00:03.160=0.5</property>
+    <property name="Tilt Y">00:00:03.160=0.5</property>
+    <property name="kdenlive:collapsed">1</property>
+   </filter>
+   <filter id="filter8">
+    <property name="rotate_center">1</property>
+    <property name="mlt_service">qtblend</property>
+    <property name="kdenlive_id">qtblend</property>
+    <property name="rect">00:00:03.160=-81 -378 2075 1469 1.000000</property>
+    <property name="rotation">00:00:03.160=0</property>
+    <property name="compositing">0</property>
+    <property name="distort">1</property>
+    <property name="kdenlive:collapsed">0</property>
+   </filter>
+  </entry>
+  <entry producer="chain2" in="00:00:04.400" out="00:00:25.360">
+   <property name="kdenlive:id">5</property>
+   <filter id="filter9">
+    <property name="version">0.1</property>
+    <property name="mlt_service">frei0r.scale0tilt</property>
+    <property name="kdenlive_id">frei0r.scale0tilt</property>
+    <property name="Clip left">00:00:04.400=0.0427083</property>
+    <property name="Clip right">00:00:04.400=0</property>
+    <property name="Clip top">00:00:04.400=0.219444</property>
+    <property name="Clip bottom">00:00:04.400=0</property>
+    <property name="Scale X">00:00:04.400=0.51</property>
+    <property name="Scale Y">00:00:04.400=0.5</property>
+    <property name="Tilt X">00:00:04.400=0.5</property>
+    <property name="Tilt Y">00:00:04.400=0.5</property>
+    <property name="kdenlive:collapsed">0</property>
+   </filter>
+   <filter id="filter10">
+    <property name="rotate_center">1</property>
+    <property name="mlt_service">qtblend</property>
+    <property name="kdenlive_id">qtblend</property>
+    <property name="rect">00:00:04.400=-81 -378 2075 1469 1.000000</property>
+    <property name="rotation">00:00:04.400=0</property>
+    <property name="compositing">0</property>
+    <property name="distort">1</property>
+    <property name="kdenlive:collapsed">0</property>
+   </filter>
   </entry>
  </playlist>
  <playlist id="playlist5"/>
  <tractor id="tractor2" in="00:00:00.000" out="00:00:22.200">
   <property name="kdenlive:trackheight">72</property>
-  <property name="kdenlive:timeline_active">0</property>
+  <property name="kdenlive:timeline_active">1</property>
   <property name="kdenlive:collapsed">0</property>
   <property name="kdenlive:thumbs_format"/>
   <property name="kdenlive:audio_rec"/>
@@ -275,7 +327,7 @@
   <property name="kdenlive:sequenceproperties.documentuuid">{687cb6ab-7925-46c5-9798-8b6ebc8fbe0d}</property>
   <property name="kdenlive:sequenceproperties.hasAudio">1</property>
   <property name="kdenlive:sequenceproperties.hasVideo">1</property>
-  <property name="kdenlive:sequenceproperties.position">75</property>
+  <property name="kdenlive:sequenceproperties.position">32</property>
   <property name="kdenlive:sequenceproperties.scrollPos">0</property>
   <property name="kdenlive:sequenceproperties.tracks">4</property>
   <property name="kdenlive:sequenceproperties.tracksCount">4</property>
@@ -335,14 +387,14 @@
    <property name="always_active">1</property>
    <property name="internal_added">237</property>
   </transition>
-  <filter id="filter7">
+  <filter id="filter11">
    <property name="window">75</property>
    <property name="max_gain">20dB</property>
    <property name="mlt_service">volume</property>
    <property name="internal_added">237</property>
    <property name="disable">1</property>
   </filter>
-  <filter id="filter8">
+  <filter id="filter12">
    <property name="channel">-1</property>
    <property name="mlt_service">panner</property>
    <property name="internal_added">237</property>
