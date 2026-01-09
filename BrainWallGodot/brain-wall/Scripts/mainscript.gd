@@ -17,6 +17,8 @@ extends Node3D
 @export var lock_z_movement: bool = true         # Bloquear movimiento en eje Z
 @export var player1_offset: Vector3 = Vector3(-1.0, 0.0, 0.0)  # Offset del jugador 1
 @export var player2_offset: Vector3 = Vector3(1.0, 0.0, 0.0)   # Offset del jugador 2
+@export var calibration_target_1: Node3D # Nodo objetivo para calibrar Jugador 1
+@export var calibration_target_2: Node3D # Nodo objetivo para calibrar Jugador 2
 
 var socket := WebSocketPeer.new()
 var players_data: Array = []
@@ -30,6 +32,8 @@ var bone_names_printed: bool = false
 # Game Manager
 var game_manager: Node = null
 var game_ui: CanvasLayer = null
+
+var player_calibrations: Array = []
 
 # Índices de KEYPOINTS enviados por MediaPipe:
 const KEYPOINTS = [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]
@@ -191,6 +195,83 @@ func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept"):
 		if game_manager and not game_manager.game_active:
 			game_manager.start_game()
+
+	# Calibración: Tecla C
+	if Input.is_key_pressed(KEY_C):
+		calibrate_players()
+
+func calibrate_players():
+	# Ajustar el tamaño del array de calibraciones
+	if player_calibrations.size() < players_data.size():
+		player_calibrations.resize(players_data.size())
+		for k in range(player_calibrations.size()):
+			if player_calibrations[k] == null:
+				player_calibrations[k] = Vector3.ZERO
+	
+	# Usamos la misma escala que en update_player para calcular la inversa
+	var play_area_scale = 3.0 
+
+	for i in range(players_data.size()):
+		var pose = players_data[i]
+		if pose.size() < 9: continue
+
+		# Calcular posición base actual (igual que en update_player)
+		var hip_left = pose[7]
+		var hip_right = pose[8]
+		var hip_x = ((hip_left["x"] + hip_right["x"]) / 2.0 - 0.5) * 2.0
+		var hip_y = ((0.5 - (hip_left["y"] + hip_right["y"]) / 2.0)) * 2.0
+
+		if mirror_mode:
+			hip_x = -hip_x
+		
+		# Determinar el objetivo de calibración
+		var target_pos = Vector3.ZERO
+		var p_offset = player1_offset if i == 0 else player2_offset
+		
+		# Si hay nodos asignados, usarlos como target
+		var target_node = null
+		if i == 0: target_node = calibration_target_1
+		elif i == 1: target_node = calibration_target_2
+		
+		if target_node:
+			target_pos = target_node.global_position
+		else:
+			# Comportamiento por defecto: Calibrar al centro definido por los offsets del script
+			target_pos = Vector3(
+				p_offset.x + offset.x,
+				1.0 + p_offset.y + offset.y,
+				p_offset.z + offset.z
+			)
+			
+		# Calcular el offset necesario (calib)
+		var calib_x = hip_x - (target_pos.x - p_offset.x - offset.x) / play_area_scale
+		var calib_y = hip_y - (target_pos.y - 1.0 - p_offset.y - offset.y) / play_area_scale
+		
+		# Calcular Z actual (sin calibrar) para obtener el offset Z
+		var raw_z = p_offset.z + offset.z
+		
+		# Logica Z copiada de update_player para consistencia
+		# Necesitamos calcular raw_height y hip_z
+		var head_y = pose[0]["y"]
+		var left_ankle_y = pose[11]["y"]
+		var right_ankle_y = pose[12]["y"]
+		var foot_y = max(left_ankle_y, right_ankle_y)
+		var raw_height = abs(head_y - foot_y)
+		if raw_height < 0.001: raw_height = 0.001
+		
+		if not lock_z_movement:
+			var z_distance_factor = 5.0
+			var z_from_distance = (raw_height - 0.5) * z_distance_factor
+			var hip_z_val = 0.0
+			if "z" in hip_left:
+				hip_z_val = -(hip_left["z"] + hip_right.get("z", 0)) / 2.0 * depth_scale
+			raw_z += z_from_distance + hip_z_val
+			
+		var calib_z = raw_z - target_pos.z
+		
+		player_calibrations[i] = Vector3(calib_x, calib_y, calib_z)
+	
+	print("Calibración realizada. Offsets: ", player_calibrations)
 
 func update_all_players():
 	while players.size() < players_data.size():
@@ -375,6 +456,13 @@ func update_player(player_idx: int, pose: Array):
 	if mirror_mode:
 		hip_x = -hip_x
 	
+	# Aplicar calibración si existe
+	if player_idx < player_calibrations.size():
+		var calib = player_calibrations[player_idx]
+		if calib:
+			hip_x -= calib.x
+			hip_y -= calib.y
+	
 	# Calcular Z solo si no está bloqueado
 	var final_z = player_offset.z + offset.z
 	if not lock_z_movement:
@@ -387,6 +475,12 @@ func update_player(player_idx: int, pose: Array):
 			hip_z = -(hip_left["z"] + hip_right.get("z", 0)) / 2.0 * depth_scale
 		
 		final_z += z_from_distance + hip_z
+		
+	# Aplicar calibración de Z
+	if player_idx < player_calibrations.size():
+		var calib = player_calibrations[player_idx]
+		if calib:
+			final_z -= calib.z
 	
 	# Posición base
 	# Multiplicamos X e Y por un factor fijo para cubrir el área de juego

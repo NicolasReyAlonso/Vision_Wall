@@ -116,7 +116,7 @@ shader = ExtResource("7_3tio3")
 shader_parameter/outline_width = 0.03
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
-[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer", "audioLoop")]
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer", "audioLoop", "calibration_target_1", "calibration_target_2")]
 script = ExtResource("1_ki6c0")
 player_scene = ExtResource("2_jmmcx")
 audioStreamPlayer = NodePath("Intro")
@@ -124,8 +124,10 @@ audioLoop = NodePath("Loop")
 offset = Vector3(0, 0, -5)
 mirror_mode = false
 model_scale = 0.2
-player1_offset = Vector3(0, 0, 2)
-player2_offset = Vector3(0, 0, 2)
+player1_offset = Vector3(0, -1, 2)
+player2_offset = Vector3(0, -1, 2)
+calibration_target_1 = NodePath("Player1")
+calibration_target_2 = NodePath("Player2")
 
 [node name="Water" type="MeshInstance3D" parent="."]
 transform = Transform3D(65.57431, 0, 0, 0, 1, 0, 0, 0, 114.70263, 0.20365024, 0, -0.023804307)
@@ -282,3 +284,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gg62s")
 mesh = SubResource("BoxMesh_vdgl5")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_f44mt")
+
+[node name="Player1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.1, -2.7)
+
+[node name="Player2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.1, -2.7)
