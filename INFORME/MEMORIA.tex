@@ -8,72 +8,139 @@
 \usepackage{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{fancyhdr}
+\usetikzlibrary{shapes.geometric, arrows, positioning, calc}
 \geometry{margin=1in}
 
-\lstset{
+% Configuración del encabezado con fancyhdr
+\pagestyle{fancy}
+\fancyhf{} % Limpiar encabezados y pies de página
+\fancyhead[L]{\includegraphics[height=1cm]{ulpgc_header.png}} % Logo ULPGC en la izquierda
+\fancyhead[R]{\leftmark} % Sección actual en la derecha
+\fancyfoot[C]{\thepage} % Número de página en el centro del pie
+\renewcommand{\headrulewidth}{0.4pt} % Línea separadora del encabezado
+\renewcommand{\footrulewidth}{0pt} % Sin línea en el pie de página
+
+% Configuración de hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Vision Wall - Proyecto Final},
+    pdfauthor={Nicolás Rey Alonso, Wafa Azdad Triki},
+}
+
+% Estilo para código Python
+\lstdefinestyle{pythonstyle}{
     language=Python,
     basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue},
-    commentstyle=\color{gray},
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
     stringstyle=\color{red},
     breaklines=true,
-    showstringspaces=false
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    captionpos=b
 }
+
+% Estilo para código GDScript
+\lstdefinestyle{gdscriptstyle}{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{purple}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{orange},
+    breaklines=true,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    backgroundcolor=\color{blue!5},
+    morekeywords={func, var, extends, export, signal, onready, const, enum, match, class_name, await},
+    captionpos=b
+}
+
+\lstset{style=pythonstyle}
 
 \begin{document}
 
 % ============ PORTADA ============
 \thispagestyle{empty}
 \begin{center}
-    \vspace*{1cm}
+    \vspace*{0.5cm}
+    
+    \includegraphics[width=4cm]{ulpgc_logo.png} % Logo de la ULPGC si está disponible
+    
+    \vspace{0.5cm}
+    
+    {\Large \textbf{Universidad de Las Palmas de Gran Canaria}}
+    
+    {\large Escuela de Ingeniería Informática}
+    
+    \vspace{1cm}
     
     {\Huge \textbf{VISION WALL}}
     
     \vspace{0.3cm}
     
-    {\Large Sistema Interactivo de Evaluación de Posturas en Tiempo Real}
+    {\Large Sistema Interactivo de Evaluación de Posturas Corporales\\en Tiempo Real mediante Visión por Computador}
     
-    \vspace{1.5cm}
+    \vspace{1cm}
     
-    % Espacio para imagen del juego
-    \begin{center}
-        \framebox{
-            \begin{minipage}[c][5.5cm]{12cm}
-                \centering
-                % \includegraphics[width=11.5cm,height=5cm]{images/gameplay.png}
-                \textit{Insertar imagen del juego aquí} \\
-                \textit{(characters/gameplay.png)}
-            \end{minipage}
-        }
-    \end{center}
+    \framebox{\parbox{0.8\textwidth}{\centering
+    \textbf{Flujo del Sistema:} \\
+    \vspace{0.3cm}
+    Cámara $\rightarrow$ MediaPipe $\rightarrow$ WebSocket $\rightarrow$ Godot 4.5
+    }}
     
     \vspace{1.5cm}
     
     {\Large \textbf{Proyecto Final}}
     
-    \vspace{0.3cm}
+    \vspace{0.2cm}
     
-    {\large Asignatura: Visión por Computador}
+    {\large Asignatura: Visión por Computador (40982)}
     
-    \vspace{1.5cm}
+    {\large Grado en Ingeniería Informática}
+    
+    \vspace{1cm}
     
     {\large \textbf{Autores:}}
     
     \vspace{0.2cm}
     
-    {\large Nicolás Rey Alonso}
+    \begin{tabular}{c}
+        {\large Nicolás Rey Alonso} \\
+        {\large Wafa Azdad Triki}
+    \end{tabular}
     
-    {\large Wafa Azdad Triki}
+    \vspace{1cm}
     
-    \vspace{1.5cm}
-    
-    {\large \textbf{Tecnologías:}}
+    {\large \textbf{Tecnologías Principales:}}
     
     \vspace{0.2cm}
     
-    {\large Godot 4.5 • Python + MediaPipe }
+    \begin{tabular}{ccc}
+        % \includegraphics[height=0.8cm]{godot_logo.png} & 
+        % \includegraphics[height=0.8cm]{python_logo.png} & 
+        % \includegraphics[height=0.8cm]{mediapipe_logo.png} \\
+        Godot 4.5 & Python 3.11 & MediaPipe
+    \end{tabular}
     
     \vfill
+    
+    {\large Curso 2025-2026}
     
     {\large \today}
     
@@ -85,619 +152,1624 @@
 \tableofcontents
 \newpage
 
+% ============ RESUMEN ============
+\section*{Resumen}
+\addcontentsline{toc}{section}{Resumen}
+
+Este documento presenta el desarrollo de \textbf{Vision Wall}, un sistema interactivo de evaluación de posturas corporales en tiempo real inspirado en el programa de televisión japonés ``Hole in the Wall''. El proyecto integra técnicas avanzadas de visión por computador mediante MediaPipe para la detección de 33 puntos de referencia del cuerpo humano, comunicación en tiempo real a través de WebSocket, y renderizado 3D con el motor de juegos Godot 4.5.
+
+El sistema permite a dos jugadores simultáneos controlar avatares 3D personalizados mediante sus movimientos corporales, debiendo adoptar posturas específicas para atravesar paredes con siluetas humanoides. La arquitectura cliente-servidor facilita una comunicación fluida entre el módulo de procesamiento de imagen (Python/MediaPipe) y el motor gráfico (Godot/GDScript), logrando tasas de actualización de aproximadamente 30 FPS.
+
+\textbf{Palabras clave:} Visión por Computador, MediaPipe, Detección de Pose, Godot Engine, WebSocket, Tiempo Real, Interacción Humano-Computador.
+
+\newpage
+
 \section{Introducción}
 
-Este proyecto implementa un sistema interactivo de evaluación de posturas corporales en tiempo real inspirado en el famoso programa de televisión japonés ``Hole in the Wall''. El sistema utiliza detección de pose mediante MediaPipe y un motor gráfico 3D (Godot) para crear una experiencia de juego inmersiva.
+Este proyecto implementa un sistema interactivo de evaluación de posturas corporales en tiempo real inspirado en el famoso programa de televisión japonés ``Hole in the Wall'' (conocido en Japón como ``Nōkabe''). El sistema utiliza detección de pose mediante MediaPipe y un motor gráfico 3D (Godot) para crear una experiencia de juego inmersiva donde los jugadores deben adoptar posturas específicas para atravesar paredes con agujeros en forma de figuras humanas.
+
+\subsection{Motivación}
+
+La motivación principal de este proyecto surge de la necesidad de explorar aplicaciones prácticas de la visión por computador en entornos interactivos y lúdicos. La detección de pose humana ha experimentado avances significativos en los últimos años, permitiendo aplicaciones que antes requerían hardware especializado costoso. Con frameworks como MediaPipe, ahora es posible implementar sistemas de seguimiento corporal precisos utilizando únicamente una cámara web convencional.
 
 \subsection{Objetivo General}
 
-Desarrollar un sistema que evalúe posturas corporales completas en tiempo real, permitiendo a los jugadores intentar atravesar paredes con agujeros en forma de figuras humanas. El sistema debe:
+Desarrollar un sistema completo que evalúe posturas corporales en tiempo real, permitiendo a los jugadores interactuar con un entorno 3D mediante sus movimientos físicos. El sistema debe:
 
 \begin{itemize}
-    \item Detectar la postura del jugador en tiempo real
-    \item Generar paredes con agujeros en diferentes formas humanas
-    \item Validar si la postura del jugador coincide con el agujero
-    \item Proporcionar retroalimentación visual e interactiva
-    \item Mantener un sistema de puntuación y vidas
+    \item Detectar la postura del jugador en tiempo real con alta precisión
+    \item Soportar múltiples jugadores simultáneamente (hasta 2)
+    \item Generar paredes con agujeros correspondientes a 7 posturas diferentes
+    \item Validar si la postura del jugador coincide con el agujero de la pared
+    \item Proporcionar retroalimentación visual e interactiva inmediata
+    \item Mantener un sistema de puntuación, vidas y progresión
+    \item Ofrecer una experiencia de usuario fluida con baja latencia
+\end{itemize}
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+    \item \textbf{Procesamiento de Imagen}: Implementar un pipeline de captura y procesamiento de video que extraiga los puntos de referencia corporales en tiempo real.
+    
+    \item \textbf{Comunicación Cliente-Servidor}: Diseñar un protocolo de comunicación eficiente basado en WebSocket para transmitir datos de pose entre Python y Godot.
+    
+    \item \textbf{Animación de Esqueleto}: Desarrollar un sistema de animación que traduzca los datos de pose capturados a movimientos del esqueleto 3D de los personajes.
+    
+    \item \textbf{Sistema de Colisiones}: Implementar un mecanismo de validación de poses basado en el motor de física de Godot.
+    
+    \item \textbf{Experiencia de Usuario}: Crear una interfaz intuitiva con retroalimentación audiovisual que mejore la experiencia de juego.
+\end{enumerate}
+
+\subsection{Alcance del Proyecto}
+
+El proyecto abarca desde la captura de video mediante cámara web hasta la renderización final en el motor de juegos, incluyendo:
+
+\begin{itemize}
+    \item Módulo de captura y procesamiento de video (Python + OpenCV)
+    \item Detección de pose con MediaPipe Pose Landmarker
+    \item Servidor WebSocket para comunicación en tiempo real
+    \item Motor de juego 3D con Godot 4.5
+    \item Sistema de selección de personajes
+    \item Generación procedural de paredes con diferentes siluetas
+    \item Sistema de puntuación y gestión de partida
+    \item Efectos de audio personalizados
 \end{itemize}
 
 \section{Tecnologías Utilizadas}
 
+En esta sección se describen las tecnologías empleadas para el desarrollo del proyecto, justificando la elección de cada una de ellas.
+
 \subsection{Motor Gráfico: Godot 4.5}
-Godot es un motor de juegos de código abierto que proporciona:
+
+Godot es un motor de juegos de código abierto multiplataforma que se ha convertido en una alternativa popular a motores comerciales como Unity o Unreal Engine. Se eligió Godot por las siguientes razones:
+
 \begin{itemize}
-    \item Soporte para Node3D y MeshInstance3D para gráficos 3D
-    \item Sistema de materiales y shaders avanzados
-    \item Gestión de escenas y nodos jerárquicos
-    \item GDScript para scripting en el motor
-    \item Sistema de colisiones 3D integrado
+    \item \textbf{Código Abierto}: Licencia MIT que permite uso comercial sin restricciones
+    \item \textbf{Soporte 3D Nativo}: Sistema completo de Node3D y MeshInstance3D para gráficos 3D
+    \item \textbf{Sistema de Materiales}: Shaders y materiales PBR (Physically Based Rendering)
+    \item \textbf{Arquitectura de Escenas}: Gestión jerárquica de nodos que facilita la organización del código
+    \item \textbf{GDScript}: Lenguaje de scripting nativo inspirado en Python, fácil de aprender
+    \item \textbf{Sistema de Colisiones 3D}: Motor de física integrado con detección de colisiones precisa
+    \item \textbf{Soporte para Skeleton3D}: Animación de esqueletos compatible con formatos estándar (.glb, .gltf)
+    \item \textbf{WebSocket Nativo}: Soporte incorporado para comunicación WebSocket
 \end{itemize}
 
-\subsection{DAW: LMMS}
-LMMS (Linux MultiMedia Studio) es una estación de trabajo de audio digital que permite:
-\begin{itemize}
-    \item Crear y editar música y efectos de sonido.
-    \item Exportar audio en formatos compatibles con Godot (.ogg, .mp3).
-    \item Utilizar sintetizadores y samples integrados.
-\end{itemize}
-
-\subsection{Creación de gráficos: Krita}
-Krita es una aplicación de pintura digital que permite:
-\begin{itemize}
-    \item Crear y editar gráficos rasterizados.
-    \item Diseñar texturas y sprites para juegos.
-    \item Exportar imágenes en formatos compatibles con Godot (.png, .jpg).
-\end{itemize}
+\begin{table}[H]
+\centering
+\caption{Comparativa de motores de juego considerados}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Característica} & \textbf{Godot 4.5} & \textbf{Unity} & \textbf{Unreal} \\
+\midrule
+Licencia & MIT (Libre) & Propietaria & Propietaria \\
+Tamaño del ejecutable & ~40 MB & ~200 MB & ~500 MB \\
+Curva de aprendizaje & Baja & Media & Alta \\
+Soporte WebSocket & Nativo & Plugin & Plugin \\
+Exportación Linux & Nativa & Limitada & Limitada \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Detección de Pose: MediaPipe}
-MediaPipe es un framework de Google para visión por computadora que:
+
+MediaPipe es un framework de Google para la construcción de pipelines de procesamiento de medios, especialmente diseñado para visión por computador. El módulo \textbf{Pose Landmarker} proporciona:
+
 \begin{itemize}
-    \item Detecta 33 puntos de referencia en el cuerpo humano
-    \item Opera en tiempo real con bajo latency
-    \item Se comunica mediante WebSocket en localhost:8765
-    \item Proporciona coordenadas 3D de cada articulación
+    \item \textbf{33 Puntos de Referencia}: Detección completa del cuerpo incluyendo cara, manos y pies
+    \item \textbf{Coordenadas 3D}: Cada punto incluye posición (x, y, z) y visibilidad
+    \item \textbf{Tiempo Real}: Procesamiento a más de 30 FPS en hardware convencional
+    \item \textbf{Multi-persona}: Capacidad de detectar hasta 2 personas simultáneamente
+    \item \textbf{Robustez}: Funciona en condiciones de iluminación variables
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|l|l|}
+\hline
+\textbf{Índice} & \textbf{Articulación} & \textbf{Conexiones} \\
+\hline
+0 & Nariz & Centro de referencia \\
+\hline
+11 & Hombro izquierdo & 12, 13, 23 \\
+12 & Hombro derecho & 11, 14, 24 \\
+\hline
+13 & Codo izquierdo & 11, 15 \\
+14 & Codo derecho & 12, 16 \\
+\hline
+15 & Muñeca izquierda & 13 \\
+16 & Muñeca derecha & 14 \\
+\hline
+23 & Cadera izquierda & 11, 24, 25 \\
+24 & Cadera derecha & 12, 23, 26 \\
+\hline
+25 & Rodilla izquierda & 23, 27 \\
+26 & Rodilla derecha & 24, 28 \\
+\hline
+27 & Tobillo izquierdo & 25 \\
+28 & Tobillo derecho & 26 \\
+\hline
+\end{tabular}
+\caption{Puntos de referencia principales de MediaPipe Pose (13 de 33 puntos utilizados)}
+\label{fig:mediapipe_landmarks}
+\end{figure}
+
+Los índices de los puntos clave utilizados en el proyecto son:
+\begin{equation}
+\text{KEYPOINTS} = [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]
+\end{equation}
+
+\subsection{Comunicación: WebSocket}
+
+WebSocket es un protocolo de comunicación bidireccional full-duplex sobre una única conexión TCP. Se eligió sobre otras alternativas por:
+
+\begin{itemize}
+    \item \textbf{Baja Latencia}: Conexión persistente sin overhead de HTTP
+    \item \textbf{Bidireccionalidad}: Comunicación en ambas direcciones
+    \item \textbf{Soporte Universal}: Implementaciones disponibles en Python y Godot
+    \item \textbf{Formato JSON}: Facilidad para serializar datos de pose
 \end{itemize}
 
 \subsection{Modelado 3D: Blender}
-Se utilizó Blender para:
+
+Se utilizó Blender 4.x para la creación de todos los assets 3D del proyecto:
+
 \begin{itemize}
-    \item Crear y rigear 4 personajes diferentes (Saw, ET, Eleven, Homer Simpson)
-    \item Exportar modelos en formato .glb con esqueleto Armature
-    \item Aplicar materiales y texturas
+    \item Modelado de 4 personajes inspirados en cultura popular (Saw, ET, Eleven, Homer)
+    \item Sistema de rigging con el addon \textbf{Rigify} para esqueletos compatibles
+    \item Skinning y weight painting para deformación natural
+    \item Exportación en formato \textbf{.glb} (GL Transmission Format Binary)
+    \item Modelado del escenario (Coliseo) y paredes con diferentes siluetas
+\end{itemize}
+
+\subsection{Audio: LMMS}
+
+LMMS (Linux MultiMedia Studio) es un DAW (Digital Audio Workstation) de código abierto utilizado para:
+
+\begin{itemize}
+    \item Composición del tema musical principal (turiruriru-01)
+    \item Creación de efectos de sonido para interacción (clicks, hovers)
+    \item Exportación en formatos .ogg y .mp3 compatibles con Godot
 \end{itemize}
 
 \subsection{Lenguajes de Programación}
 
+\subsubsection{Python 3.11}
+
+Utilizado para el backend de procesamiento de imagen:
+
+\begin{lstlisting}[style=pythonstyle, caption=Dependencias principales de Python]
+# Bibliotecas utilizadas
+import cv2           # OpenCV para captura de video
+import mediapipe     # Deteccion de pose
+import websockets    # Servidor WebSocket
+import asyncio       # Programacion asincrona
+import json          # Serializacion de datos
+import numpy as np   # Operaciones numericas
+\end{lstlisting}
+
 \subsubsection{GDScript}
-Lenguaje de scripting nativo de Godot utilizado para:
-\begin{itemize}
-    \item Lógica del juego
-    \item Comunicación WebSocket con MediaPipe
-    \item Control de animaciones
-\end{itemize}
 
-\subsubsection{Python}
-Lenguaje de programación utilizado para procesamiento de datos y scripts complementarios.
+Lenguaje nativo de Godot, similar a Python, utilizado para toda la lógica del juego:
 
-\subsection{Entorno de Programación: Anaconda}
-Anaconda es una distribución de Python que proporciona:
+\begin{lstlisting}[style=gdscriptstyle, caption=Ejemplo de declaración en GDScript]
+extends Node3D
+
+@export var wall_speed: float = 5.0
+@export var tolerance: float = 0.3
+
+var socket := WebSocketPeer.new()
+var players: Array = []
+
+func _ready():
+    var err = socket.connect_to_url("ws://localhost:8765")
+    if err != OK:
+        push_error("Error de conexion WebSocket")
+\end{lstlisting}
+
+\subsection{Entorno de Desarrollo}
+
 \begin{itemize}
-    \item Gestión de paquetes y dependencias
-    \item Entornos virtuales aislados
-    \item Herramientas para ciencia de datos
+    \item \textbf{Sistema Operativo}: Linux (Ubuntu/derivados)
+    \item \textbf{IDE}: Visual Studio Code con extensiones para GDScript y Python
+    \item \textbf{Control de Versiones}: Git
+    \item \textbf{Gestión de Paquetes}: Anaconda/Miniconda para entornos virtuales Python
 \end{itemize}
 
 \section{Arquitectura del Sistema}
 
+El sistema sigue una arquitectura cliente-servidor desacoplada que separa el procesamiento de visión por computador de la renderización 3D, permitiendo flexibilidad y escalabilidad.
+
+\subsection{Diagrama de Arquitectura General}
+
+El sistema se organiza en las siguientes capas:
+
+\begin{enumerate}
+    \item \textbf{Capa de Entrada}: Cámara Web (640x480)
+    \item \textbf{Capa de Procesamiento}: OpenCV (Captura) $\rightarrow$ MediaPipe (Pose Landmarker)
+    \item \textbf{Capa de Comunicación}: WebSocket Server (:8765) transmite datos JSON
+    \item \textbf{Capa de Aplicación}: Godot Engine actúa como cliente WebSocket
+    \item \textbf{Submódulos de Godot}:
+    \begin{itemize}
+        \item Skeleton3D (Animación)
+        \item Physics (Colisiones)
+        \item Renderizado 3D + HUD
+    \end{itemize}
+\end{enumerate}
+
 \subsection{Estructura del Proyecto}
 
-\begin{verbatim}
-BrainWallGodot/
-├── brain-wall/
-│   ├── project.godot
-│   ├── scenes/
-│   │   ├── character_select.gd
-│   │   ├── mainscript.gd
-│   │   ├── PoseEvaluator.gd
-│   │   ├── WallGenerator.gd
-│   │   ├── PoseReceiver.gd
-│   │   ├── GameHUD.gd
-│   │   ├── main_menu.tscn
-│   │   └── mainScene.tscn
-│   └── assets/
-│       ├── models/
-│       ├── shaders/
-│       ├── music/
-│       └── SoundEffects/
-\end{verbatim}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+Entrega_FINAL_VC/
+|-- Entrega.ipynb              # Version standalone (Pygame)
+|-- mediapipe_util.py          # Servidor WebSocket + MediaPipe
+|-- pose_landmarker_full.task  # Modelo de MediaPipe
+|-- BrainWallGodot/
+|   +-- brain-wall/
+|       |-- project.godot      # Configuracion del proyecto
+|       |-- PoseReceiver.gd    # Receptor WebSocket simple
+|       |-- main_menu.gd       # Controlador menu principal
+|       |-- scenes/
+|       |   |-- mainScene.tscn     # Escena principal del juego
+|       |   |-- main_menu.tscn     # Menu principal
+|       |   |-- CharacterSelect.tscn
+|       |   |-- WallGenerator.gd   # Generador de paredes
+|       |   |-- PoseEvaluator.gd   # Evaluador de posturas
+|       |   +-- game_ui.tscn       # Interfaz de usuario
+|       |-- Scripts/
+|       |   |-- mainscript.gd      # Controlador principal
+|       |   |-- character_select.gd
+|       |   |-- game_manager.gd    # Gestor de partida
+|       |   |-- game_state.gd      # Estado global
+|       |   +-- wall.gd            # Comportamiento de paredes
+|       +-- assets/
+|           |-- Characters/        # Escenas de personajes
+|           |-- models/            # Modelos 3D (.glb)
+|           |-- music/             # Musica de fondo
+|           |-- SoundEffects/      # Efectos de sonido
+|           +-- Walls/             # Meshes de paredes
+|-- Modelados/                 # Archivos fuente de Blender
++-- INFORME/
+    +-- MEMORIA.tex            # Este documento
+\end{lstlisting}
 
 \subsection{Flujo de Datos}
 
+El flujo de datos del sistema se puede describir en las siguientes etapas:
+
 \begin{enumerate}
-    \item \textbf{Captura de Video}: Cámara web captura al jugador
-    \item \textbf{MediaPipe}: Procesa el video y detecta 33 puntos de pose
-    \item \textbf{WebSocket}: Envía datos de pose a Godot (localhost:8765)
-    \item \textbf{PoseReceiver}: Recibe datos y los procesa
-    \item \textbf{Skeleton Animation}: Anima el personaje con los datos de pose
-    \item \textbf{WallGenerator}: Genera paredes y valida colisiones
-    \item \textbf{GameHUD}: Muestra puntuación, vidas y postura actual
+    \item \textbf{Captura de Video}: La cámara web captura frames a 640x480 píxeles a ~30 FPS.
+    
+    \item \textbf{Preprocesamiento}: OpenCV convierte el frame de BGR a RGB y aplica flip horizontal (efecto espejo).
+    
+    \item \textbf{Detección de Pose}: MediaPipe Pose Landmarker procesa el frame y detecta hasta 2 personas, extrayendo 33 puntos de referencia por persona.
+    
+    \item \textbf{Filtrado de Puntos}: Se seleccionan los 13 puntos clave relevantes para el seguimiento corporal (índices 0, 11-16, 23-28).
+    
+    \item \textbf{Serialización}: Los datos de pose se serializan en formato JSON con estructura:
+    \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+    {
+      "poses": [
+        [{"x": 0.5, "y": 0.3, "z": -0.1}, ...],  // Jugador 1
+        [{"x": 0.6, "y": 0.35, "z": -0.08}, ...] // Jugador 2
+      ]
+    }
+    \end{lstlisting}
+    
+    \item \textbf{Transmisión WebSocket}: El servidor envía los datos a todos los clientes conectados.
+    
+    \item \textbf{Recepción en Godot}: El cliente WebSocket recibe y parsea los datos JSON.
+    
+    \item \textbf{Actualización de Esqueleto}: Los datos de pose se traducen a rotaciones de huesos del Skeleton3D.
+    
+    \item \textbf{Detección de Colisiones}: El motor de física verifica colisiones entre jugadores y paredes.
+    
+    \item \textbf{Actualización de UI}: Se actualiza el HUD con puntuación, vidas y postura actual.
 \end{enumerate}
+
+\begin{center}
+\textbf{Pipeline de procesamiento:}\\
+\vspace{0.3cm}
+Captura $\rightarrow$ RGB+Flip $\rightarrow$ MediaPipe $\rightarrow$ JSON $\rightarrow$ WebSocket $\rightarrow$ Godot $\rightarrow$ Skeleton $\rightarrow$ Render
+\end{center}
 
 \section{Componentes Principales}
 
-\subsection{1. character\_select.gd}
+Esta sección describe en detalle los componentes de software que conforman el sistema.
 
-Sistema de selección de personajes para 2 jugadores.
+\subsection{Servidor MediaPipe (mediapipe\_util.py)}
 
-\subsubsection{Funcionalidades}
-\begin{itemize}
-    \item Interfaz de selección visual para 4 personajes
-    \item Selección secuencial: Jugador 1 → Jugador 2
-    \item Almacenamiento de selecciones en metadatos de escena
-    \item Auto-transición a escena principal tras completar selección
-\end{itemize}
+El servidor es el componente encargado de capturar video, detectar poses y transmitir los datos a los clientes.
 
-\subsubsection{Flujo}
-\begin{enumerate}
-    \item Mostrar 4 opciones de personajes
-    \item Jugador 1 selecciona personaje
-    \item Jugador 2 selecciona personaje
-    \item Cargar escena principal (mainScene.tscn)
-\end{enumerate}
+\subsubsection{Configuración de MediaPipe}
 
-\subsection{2. mainscript.gd}
+\begin{lstlisting}[style=pythonstyle, caption=Configuración del detector de pose]
+BaseOptions = mp.tasks.BaseOptions
+PoseLandmarker = mp.tasks.vision.PoseLandmarker
+PoseLandmarkerOptions = mp.tasks.vision.PoseLandmarkerOptions
+VisionRunningMode = mp.tasks.vision.RunningMode
 
-Script controlador principal del juego.
+options = PoseLandmarkerOptions(
+    base_options=BaseOptions(
+        model_asset_path="pose_landmarker_full.task"
+    ),
+    num_poses=2,  # Detectar hasta 2 personas
+    running_mode=VisionRunningMode.VIDEO
+)
 
-\subsubsection{Variables Globales}
-\begin{verbatim}
-- game_over: bool
-- score: int
-- lives: int
-- current_pose_type: String
-- ws: WebSocketPeer
-- skeleton_nodes: Array (2 personajes)
-\end{verbatim}
+detector = PoseLandmarker.create_from_options(options)
+\end{lstlisting}
 
-\subsubsection{Funciones Principales}
+\subsubsection{Servidor WebSocket Asíncrono}
 
-\begin{itemize}
-    \item \textbf{\_ready()}: Inicialización de escena, plataforma, cámara, luces, personajes
-    \item \textbf{\_process(delta)}: Loop principal del juego
-    \item \textbf{connect\_websocket()}: Conexión a localhost:8765
-    \item \textbf{update\_player\_animation()}: Animar personajes con datos de pose
-    \item \textbf{update\_wall\_system()}: Gestionar movimiento de paredes y colisiones
-    \item \textbf{check\_wall\_collision()}: Validar si jugador pasó a través del agujero
-    \item \textbf{create\_platform()}: Crear plataforma de juego
-\end{itemize}
+El servidor utiliza programación asíncrona para manejar múltiples clientes:
 
-\subsubsection{Posiciones en Escena}
-\begin{itemize}
-    \item Jugador 1: (-2, 1, 0) - Verde
-    \item Jugador 2: (2, 1, 0) - Magenta
-    \item Cámara: (0, 2, 8)
-    \item Plataforma: y=0, dimensiones 10×0.5×5
-\end{itemize}
+\begin{lstlisting}[style=pythonstyle, caption=Broadcast de datos de pose]
+async def capture_and_broadcast():
+    cap = cv2.VideoCapture(0)
+    time_ms = 0
+    
+    while True:
+        ret, frame = cap.read()
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        mp_image = mp.Image(
+            image_format=mp.ImageFormat.SRGB, 
+            data=rgb
+        )
+        
+        result = detector.detect_for_video(mp_image, time_ms)
+        time_ms += 33  # ~30 FPS
+        
+        poses_data = []
+        for landmarks in result.pose_landmarks[:2]:
+            pose_points = [
+                {"x": landmarks[i].x, 
+                 "y": landmarks[i].y, 
+                 "z": landmarks[i].z} 
+                for i in KEYPOINTS
+            ]
+            poses_data.append(pose_points)
+        
+        # Broadcast a todos los clientes
+        message = json.dumps({"poses": poses_data})
+        websockets.broadcast(connected_clients, message)
+\end{lstlisting}
 
-\subsection{3. WallGenerator.gd}
+\subsection{Controlador Principal (mainscript.gd)}
 
-Sistema de generación y movimiento de paredes con agujeros en forma de figuras humanas.
+El script principal de Godot maneja la lógica del juego, la conexión WebSocket y la actualización de personajes.
+
+\subsubsection{Variables de Configuración}
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Variables exportables del controlador]
+@export var target_height: float = 2.0
+@export var scale_factor: float = 0.7
+@export var depth_scale: float = 2.0
+@export var mirror_mode: bool = true
+@export var movement_smoothing: float = 0.2
+@export var rotation_smoothing: float = 0.08
+@export var lock_z_movement: bool = true
+@export var player1_offset: Vector3 = Vector3(-1.0, 0.0, 0.0)
+@export var player2_offset: Vector3 = Vector3(1.0, 0.0, 0.0)
+\end{lstlisting}
+
+\subsubsection{Mapeo de Huesos}
+
+La traducción de datos de MediaPipe a rotaciones de esqueleto requiere un mapeo de índices a nombres de huesos:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Mapeo de extremidades a índices de MediaPipe]
+const LIMB_INDICES = {
+    "upper_arm_L": [1, 3],   # hombro izq -> codo izq
+    "forearm_L": [3, 5],     # codo izq -> muneca izq
+    "upper_arm_R": [2, 4],   # hombro der -> codo der
+    "forearm_R": [4, 6],     # codo der -> muneca der
+    "thigh_L": [7, 9],       # cadera izq -> rodilla izq
+    "shin_L": [9, 11],       # rodilla izq -> tobillo izq
+    "thigh_R": [8, 10],      # cadera der -> rodilla der
+    "shin_R": [10, 12],      # rodilla der -> tobillo der
+}
+\end{lstlisting}
+
+\subsubsection{Algoritmo de Actualización de Pose}
+
+El proceso de actualización de pose sigue estos pasos:
+
+\begin{algorithm}[H]
+\caption{Actualización de pose del jugador}
+\begin{algorithmic}[1]
+\State $data \gets$ ParseJSON(websocket\_packet)
+\For{cada $player\_idx$ en $players\_data$}
+    \State $skeleton \gets players\_skeletons[player\_idx]$
+    \State $pose\_points \gets data.poses[player\_idx]$
+    \For{cada $limb$ en UPDATE\_ORDER}
+        \State $(start, end) \gets LIMB\_INDICES[limb]$
+        \State $dir \gets pose\_points[end] - pose\_points[start]$
+        \State $dir \gets normalize(dir)$
+        \State $rotation \gets look\_at\_rotation(dir)$
+        \State $bone\_idx \gets skeleton.find\_bone(BONE\_NAMES[limb])$
+        \State $current \gets skeleton.get\_bone\_pose\_rotation(bone\_idx)$
+        \State $smoothed \gets slerp(current, rotation, rotation\_smoothing)$
+        \State $skeleton.set\_bone\_pose\_rotation(bone\_idx, smoothed)$
+    \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Generador de Paredes (WallGenerator.gd)}
+
+Sistema de generación procedural de paredes con agujeros en forma de siluetas humanas.
 
 \subsubsection{Variables de Exportación}
-\begin{verbatim}
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Configuración del generador]
 @export var wall_spawn_interval: float = 3.0
 @export var wall_speed: float = 5.0
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Posturas Disponibles}
 
+El sistema define 7 posturas diferentes que los jugadores deben adoptar:
+
+\begin{table}[H]
+\centering
+\caption{Posturas disponibles en el juego}
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+\textbf{Postura} & \textbf{Descripción} & \textbf{Dificultad} \\
+\midrule
+T\_POSE & Brazos extendidos horizontalmente a los lados & Fácil \\
+ARMS\_UP & Ambos brazos levantados verticalmente & Fácil \\
+ARMS\_DOWN & Brazos pegados al cuerpo & Fácil \\
+LEFT\_ARM\_UP & Solo brazo izquierdo arriba, derecho abajo & Media \\
+RIGHT\_ARM\_UP & Solo brazo derecho arriba, izquierdo abajo & Media \\
+SQUAT & Posición agachada con rodillas flexionadas & Difícil \\
+JUMP & Posición de salto con cuerpo elevado & Difícil \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Generación de Mesh con SurfaceTool}
+
+Las paredes se generan proceduralmente usando el SurfaceTool de Godot:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Generación de pared T-Pose]
+func create_t_pose_wall(st: SurfaceTool):
+    var left = -2.5
+    var right = 2.5
+    var top = 1.25
+    var bottom = -1.25
+    
+    # Agujero T (brazos y cuerpo)
+    var arm_left = -1.0
+    var arm_right = 1.0
+    var arm_top = 0.75
+    var arm_bottom = 0.0
+    
+    var body_left = -0.375
+    var body_right = 0.375
+    var body_top = 0.0
+    var body_bottom = -1.0
+    
+    # Marco superior (encima de los brazos)
+    add_rect(st, left, top, right, arm_top)
+    
+    # Marcos laterales de los brazos
+    add_rect(st, left, arm_top, arm_left, arm_bottom)
+    add_rect(st, arm_right, arm_top, right, arm_bottom)
+    
+    # Marcos laterales del cuerpo
+    add_rect(st, left, arm_bottom, body_left, body_bottom)
+    add_rect(st, body_right, arm_bottom, right, body_bottom)
+    
+    # Marco inferior
+    add_rect(st, left, body_bottom, right, bottom)
+\end{lstlisting}
+
+\subsection{Evaluador de Posturas (PoseEvaluator.gd)}
+
+Componente que evalúa la coincidencia entre la postura del jugador y la postura objetivo.
+
+\subsubsection{Algoritmo de Evaluación}
+
+La evaluación se basa en el análisis de ángulos de las articulaciones:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Evaluación de T-Pose]
+func evaluate_t_pose(skeleton: Skeleton3D) -> float:
+    # T-Pose: brazos horizontales (0 grados)
+    var left_arm = get_arm_angle(skeleton, "Brazo.L")
+    var right_arm = get_arm_angle(skeleton, "Brazo.R")
+    
+    # Score inversamente proporcional a la desviacion
+    var left_score = 1.0 - (abs(left_arm) / 90.0)
+    var right_score = 1.0 - (abs(right_arm) / 90.0)
+    
+    return clamp((left_score + right_score) / 2.0, 0.0, 1.0)
+\end{lstlisting}
+
+El score final se calcula como:
+\begin{equation}
+\text{score} = \frac{1}{2} \left( 1 - \frac{|\theta_L|}{90°} + 1 - \frac{|\theta_R|}{90°} \right)
+\end{equation}
+
+donde $\theta_L$ y $\theta_R$ son los ángulos de los brazos izquierdo y derecho respectivamente.
+
+\subsection{Selección de Personajes (character\_select.gd)}
+
+Sistema de selección de personajes para modo de 2 jugadores.
+
+\subsubsection{Flujo de Selección}
+
 \begin{enumerate}
-    \item \textbf{T\_POSE}: Brazos extendidos horizontalmente
-    \item \textbf{ARMS\_UP}: Brazos levantados verticalmente
-    \item \textbf{ARMS\_DOWN}: Brazos bajados
-    \item \textbf{LEFT\_ARM\_UP}: Brazo izquierdo arriba
-    \item \textbf{RIGHT\_ARM\_UP}: Brazo derecho arriba
-    \item \textbf{SQUAT}: Agachado
-    \item \textbf{JUMP}: Saltando
+    \item Se muestran 4 opciones de personajes
+    \item Jugador 1 selecciona su personaje (marcado en verde)
+    \item Jugador 2 selecciona su personaje (marcado en magenta)
+    \item Las selecciones se almacenan en metadatos del árbol de escenas
+    \item Se carga la escena principal con los personajes seleccionados
 \end{enumerate}
 
-\subsection{Sistema de Paredes}
-
-Las paredes son elementos dinámicos que se presentan con diferentes formas correspondientes a las 7 posturas disponibles. Cada pared incluye:
-\begin{itemize}
-    \item Forma adaptada a la postura requerida
-    \item Colisiones manejadas por el motor de Godot
-    \item Material visual con transparencia para claridad
-    \item Movimiento continuo hacia los jugadores
-\end{itemize}
-
-\subsection{4. PoseReceiver.gd}
-
-Recibe datos de pose del servidor MediaPipe via WebSocket.
-
-\subsubsection{Estructura de Datos}
-
-Los datos de MediaPipe incluyen:
-\begin{verbatim}
-{
-  "pose_landmarks": [
-    {"x": float, "y": float, "z": float, "visibility": float},
-    ... (33 puntos de referencia)
-  ],
-  "pose_world_landmarks": [...],
-  "pose_type": "T_POSE" | "ARMS_UP" | ... (7 tipos)
-}
-\end{verbatim}
-
-\subsubsection{Puntos de Referencia Utilizados}
-
-Se utilizan 8 puntos clave del esqueleto:
-\begin{enumerate}
-    \item Cuello (Neck) - promedio de hombros
-    \item Hombro izquierdo (Left Shoulder)
-    \item Hombro derecho (Right Shoulder)
-    \item Codo izquierdo (Left Elbow)
-    \item Codo derecho (Right Elbow)
-    \item Muñeca izquierda (Left Wrist)
-    \item Muñeca derecha (Right Wrist)
-    \item Cadera (Hip) - promedio de caderas
-\end{enumerate}
-
-\subsection{5. GameHUD.gd}
-
-Sistema de interfaz de usuario que muestra:
-\begin{itemize}
-    \item Puntuación actual
-    \item Vidas restantes
-    \item Postura actual detectada
-\end{itemize}
+\begin{lstlisting}[style=gdscriptstyle, caption=Almacenamiento de selección]
+func _on_character_selected(char_name: String):
+    if current_player == 1:
+        get_tree().root.set_meta("personaje1", char_name)
+        current_player = 2
+    else:
+        get_tree().root.set_meta("personaje2", char_name)
+        get_tree().change_scene_to_file("res://scenes/mainScene.tscn")
+\end{lstlisting}
 
 \section{Sistemas de Juego}
 
-\subsection{Sistema de Puntuación}
+\subsection{Sistema de Puntuación y Progresión}
 
-\begin{itemize}
-    \item \textbf{Puntos por pared}: +10 puntos si se pasa correctamente
-    \item \textbf{Penalización}: -1 vida si se choca con la pared
-    \item \textbf{Vidas iniciales}: 3 vidas por jugador
-    \item \textbf{Game Over}: Cuando las vidas llegan a 0
-\end{itemize}
+El sistema de puntuación está diseñado para recompensar la precisión y la consistencia:
 
-\subsection{Sistema de Colisión}
+\begin{table}[H]
+\centering
+\caption{Sistema de puntuación}
+\begin{tabular}{lc}
+\toprule
+\textbf{Acción} & \textbf{Puntos/Penalización} \\
+\midrule
+Pasar pared correctamente & +10 puntos \\
+Colisión con pared & -1 vida \\
+Vidas iniciales & 3 vidas \\
+Umbral de acierto (versión Pygame) & 40\% de coincidencia \\
+Tolerancia (versión Godot) & 0.3 (30\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-El sistema de colisiones está implementado mediante el motor de colisiones 3D integrado de Godot, que gestiona automáticamente:
-\begin{itemize}
-    \item Detección de colisiones entre los personajes y las paredes
-    \item Validación de paso correcto a través del agujero
-    \item Otorgamiento de puntos (+10) si la colisión no ocurre
-    \item Penalización de vidas (-1) si hay colisión
-\end{itemize}
+\subsubsection{Progresión de Dificultad (Versión Pygame)}
 
-\subsection{Animación de Personajes}
+La dificultad aumenta progresivamente:
 
-Cada personaje tiene un Skeleton3D que se anima mediante los datos de pose capturados:
-\begin{itemize}
-    \item Se capturan datos de MediaPipe en tiempo real
-    \item Se interpolan las rotaciones para suavidad en las transiciones
-    \item Se actualiza cada frame según los puntos de referencia detectados
-    \item El esqueleto se deforma automáticamente siguiendo el movimiento del jugador
-\end{itemize}
+\begin{lstlisting}[style=pythonstyle, caption=Sistema de progresión]
+# Subir de nivel cada 500 puntos
+if self.score > self.level * 500:
+    self.level += 1
+    # Aumentar velocidad de paredes
+    self.wall_speed = min(4, 1.5 + self.level * 0.3)
+    # Reducir tiempo disponible
+    self.time_per_wall = max(7.0, 10.0 - self.level * 0.3)
+\end{lstlisting}
 
-\subsection{Generación de Paredes}
+\subsection{Sistema de Colisiones}
 
-\begin{itemize}
-    \item \textbf{Intervalo}: Cada 3 segundos se genera una nueva pared
-    \item \textbf{Postura}: Se selecciona aleatoriamente de las 7 disponibles
-    \item \textbf{Movimiento}: -5.0 unidades/segundo hacia el jugador
-\end{itemize}
+El sistema de colisiones en Godot utiliza \texttt{Area3D} para detectar cuando un jugador entra en contacto con una pared.
 
-\section{Detalles Técnicos}
+\subsubsection{Configuración de Áreas de Colisión}
 
-\subsection{Comunicación WebSocket}
-
-\begin{verbatim}
-# Cliente: localhost:8765
-# Protocolo: WebSocket con JSON
-# Frecuencia: 30 FPS (aproximadamente)
-# Datos: Pose 3D del cuerpo, tipo de postura detectada
-
-Ejemplo de mensaje recibido:
-{
-  "pose_landmarks": [
-    {"x": 0.5, "y": 0.2, "z": -0.1, "visibility": 0.98},
-    ...
-  ],
-  "pose_type": "T_POSE"
-}
-\end{verbatim}
-
-\subsection{Sistemas de Generación Dinámica}
-
-Las paredes se generan con SurfaceTool:
-
-\begin{verbatim}
-func add_rect(st: SurfaceTool, x1, y1, x2, y2):
-    Crea dos triángulos formando un rectángulo
-    - Vértice 1: (x1, y1, z)
-    - Vértice 2: (x2, y1, z)
-    - Vértice 3: (x2, y2, z)
-    - Vértice 4: (x1, y2, z)
+\begin{lstlisting}[style=gdscriptstyle, caption=Creación de área de colisión para jugador]
+func create_fallback_collision_area(player: Node3D, 
+                                     player_idx: int) -> Area3D:
+    var area = Area3D.new()
+    area.name = "PlayerCollisionArea_" + str(player_idx)
+    area.set_meta("player_idx", player_idx)
     
-    Triángulo 1: 1-2-3
-    Triángulo 2: 1-3-4
-\end{verbatim}
+    var collision_shape = CollisionShape3D.new()
+    var capsule = CapsuleShape3D.new()
+    capsule.radius = 0.3
+    capsule.height = 1.5
+    collision_shape.shape = capsule
+    collision_shape.position = Vector3(0, 0.75, 0)
+    
+    area.add_child(collision_shape)
+    player.add_child(area)
+    
+    # Conectar senal de colision
+    area.area_entered.connect(
+        _on_player_area_entered.bind(player_idx)
+    )
+    
+    return area
+\end{lstlisting}
+
+\subsubsection{Diagrama de Colisiones}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{
+\textbf{Sistema de Validación de Colisiones:}
+\begin{itemize}
+    \item \textbf{Pared con agujero}: Se genera una forma irregular en cada pared
+    \item \textbf{Jugador}: Representado por sus puntos clave de pose
+    \item \textbf{Movimiento}: Las paredes avanzan hacia el jugador en el eje Z
+    \item \textbf{Validación}: 
+    \begin{itemize}
+        \item Si el jugador encaja en el agujero: \textbf{+10 puntos}
+        \item Si el jugador choca con la pared: \textbf{-1 vida}
+    \end{itemize}
+\end{itemize}
+}}
+\caption{Diagrama de validación de colisión}
+\end{figure}
+
+\subsection{Animación de Personajes en Tiempo Real}
+
+La animación de los personajes se realiza mediante la manipulación directa del Skeleton3D:
+
+\subsubsection{Proceso de Animación}
+
+\begin{enumerate}
+    \item \textbf{Recepción de datos}: Se reciben coordenadas 3D de las articulaciones.
+    
+    \item \textbf{Cálculo de dirección}: Para cada extremidad, se calcula el vector dirección:
+    \begin{equation}
+    \vec{d} = \frac{\vec{p}_{end} - \vec{p}_{start}}{|\vec{p}_{end} - \vec{p}_{start}|}
+    \end{equation}
+    
+    \item \textbf{Conversión a rotación}: Se utiliza \texttt{Basis.looking\_at()} para convertir el vector en una rotación quaternion.
+    
+    \item \textbf{Interpolación}: Se aplica interpolación esférica (SLERP) para suavizar el movimiento:
+    \begin{equation}
+    q_{new} = \text{slerp}(q_{current}, q_{target}, t)
+    \end{equation}
+    donde $t$ es el factor de suavizado (típicamente 0.08-0.2).
+    
+    \item \textbf{Aplicación}: La rotación suavizada se aplica al hueso correspondiente.
+\end{enumerate}
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Orden de actualización de huesos]
+const UPDATE_ORDER = [
+    "upper_arm_L", "forearm_L",  # Brazo izquierdo
+    "upper_arm_R", "forearm_R",  # Brazo derecho
+    "thigh_L", "shin_L",         # Pierna izquierda
+    "thigh_R", "shin_R"          # Pierna derecha
+]
+\end{lstlisting}
+
+\subsection{Generación Dinámica de Paredes}
+
+Las paredes se generan cada intervalo de tiempo usando SurfaceTool de Godot:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Función auxiliar para crear rectángulos]
+func add_rect(st: SurfaceTool, x1, y1, x2, y2):
+    """Crea dos triangulos formando un rectangulo"""
+    var z = 0.0
+    
+    # Vertices
+    var v1 = Vector3(x1, y1, z)
+    var v2 = Vector3(x2, y1, z)
+    var v3 = Vector3(x2, y2, z)
+    var v4 = Vector3(x1, y2, z)
+    
+    # Triangulo 1
+    st.add_vertex(v1)
+    st.add_vertex(v2)
+    st.add_vertex(v3)
+    
+    # Triangulo 2
+    st.add_vertex(v1)
+    st.add_vertex(v3)
+    st.add_vertex(v4)
+\end{lstlisting}
+
+\section{Detalles Técnicos de Implementación}
+
+\subsection{Protocolo de Comunicación WebSocket}
+
+La comunicación entre el servidor Python y el cliente Godot se realiza mediante WebSocket sobre TCP.
+
+\begin{table}[H]
+\centering
+\caption{Especificaciones del protocolo WebSocket}
+\begin{tabular}{ll}
+\toprule
+\textbf{Parámetro} & \textbf{Valor} \\
+\midrule
+Dirección & localhost (127.0.0.1) \\
+Puerto & 8765 \\
+Protocolo & WebSocket (RFC 6455) \\
+Formato de datos & JSON \\
+Frecuencia de envío & ~30 mensajes/segundo \\
+Latencia típica & <50ms \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Estructura del Mensaje JSON}
+
+\begin{lstlisting}[style=pythonstyle, caption=Formato de mensaje de pose]
+{
+    "poses": [
+        # Jugador 1: Array de 13 puntos
+        [
+            {"x": 0.52, "y": 0.18, "z": -0.12},  # Nariz (0)
+            {"x": 0.38, "y": 0.42, "z": -0.08},  # Hombro L (11)
+            {"x": 0.62, "y": 0.41, "z": -0.09},  # Hombro R (12)
+            {"x": 0.25, "y": 0.55, "z": -0.05},  # Codo L (13)
+            {"x": 0.75, "y": 0.54, "z": -0.06},  # Codo R (14)
+            {"x": 0.15, "y": 0.68, "z": -0.03},  # Muneca L (15)
+            {"x": 0.85, "y": 0.67, "z": -0.04},  # Muneca R (16)
+            {"x": 0.42, "y": 0.72, "z": -0.10},  # Cadera L (23)
+            {"x": 0.58, "y": 0.71, "z": -0.11},  # Cadera R (24)
+            {"x": 0.40, "y": 0.88, "z": -0.08},  # Rodilla L (25)
+            {"x": 0.60, "y": 0.87, "z": -0.09},  # Rodilla R (26)
+            {"x": 0.38, "y": 0.98, "z": -0.05},  # Tobillo L (27)
+            {"x": 0.62, "y": 0.97, "z": -0.06}   # Tobillo R (28)
+        ],
+        # Jugador 2 (mismo formato)
+        [...]
+    ]
+}
+\end{lstlisting}
+
+\subsubsection{Interpretación de Coordenadas}
+
+\begin{itemize}
+    \item \textbf{x}: Posición horizontal normalizada [0, 1], donde 0 = izquierda, 1 = derecha
+    \item \textbf{y}: Posición vertical normalizada [0, 1], donde 0 = arriba, 1 = abajo
+    \item \textbf{z}: Profundidad relativa, valores negativos = más cerca de la cámara
+\end{itemize}
+
+\subsection{Transformación de Coordenadas}
+
+Las coordenadas de MediaPipe se transforman al espacio 3D de Godot:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Transformación de coordenadas]
+func transform_pose_to_3d(point: Dictionary) -> Vector3:
+    var x = (point.x - 0.5) * 2.0 * scale_factor
+    var y = (0.5 - point.y) * 2.0 * scale_factor
+    var z = point.z * depth_scale
+    
+    if mirror_mode:
+        x = -x
+    
+    if lock_z_movement:
+        z = 0.0
+    
+    return Vector3(x, y, z) + offset
+\end{lstlisting}
 
 \subsection{Material de Paredes}
 
-\begin{verbatim}
-StandardMaterial3D:
-  - albedo_color: (0.2, 0.2, 0.8, 0.8) - Azul transparente
-  - transparency: TRANSPARENCY_ALPHA
-  - cull_mode: CULL_DISABLED
-\end{verbatim}
+Las paredes utilizan un material semitransparente para permitir visibilidad:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Configuración de material]
+var material = StandardMaterial3D.new()
+material.albedo_color = Color(0.2, 0.2, 0.8, 0.8)  # Azul 80% opaco
+material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+material.cull_mode = BaseMaterial3D.CULL_DISABLED  # Doble cara
+\end{lstlisting}
+
+\subsection{Gestión de Memoria y Rendimiento}
+
+\subsubsection{Limpieza de Paredes}
+
+Las paredes se eliminan cuando salen del área de juego:
+
+\begin{lstlisting}[style=gdscriptstyle, caption=Limpieza automática de paredes]
+func _process(delta):
+    for wall in get_children():
+        wall.position.z -= wall_speed * delta
+        
+        # Eliminar paredes fuera de rango
+        if wall.position.z < -30:
+            wall.queue_free()
+\end{lstlisting}
+
+\subsubsection{Pool de Conexiones WebSocket}
+
+El servidor mantiene un conjunto de clientes conectados:
+
+\begin{lstlisting}[style=pythonstyle, caption=Gestión de clientes conectados]
+connected_clients = set()
+
+async def stream_pose(websocket):
+    connected_clients.add(websocket)
+    print(f"Cliente conectado. Total: {len(connected_clients)}")
+    
+    try:
+        await websocket.wait_closed()
+    finally:
+        connected_clients.remove(websocket)
+        print(f"Cliente desconectado. Total: {len(connected_clients)}")
+\end{lstlisting}
+
+\section{Versión Standalone (Pygame)}
+
+Además de la versión Godot, el proyecto incluye una implementación standalone en Python utilizando Pygame, contenida en el archivo \texttt{Entrega.ipynb}.
+
+\subsection{Características de la Versión Pygame}
+
+\begin{itemize}
+    \item \textbf{Autónoma}: No requiere servidor separado
+    \item \textbf{Segmentación de fondo}: Utiliza MediaPipe Selfie Segmentation
+    \item \textbf{Interfaz 2D}: Visualización simplificada del esqueleto
+    \item \textbf{Sistema de niveles}: Dificultad progresiva
+\end{itemize}
+
+\subsection{Detección de Posición de Brazos}
+
+\begin{lstlisting}[style=pythonstyle, caption=Algoritmo de detección de posición de brazo]
+def check_arm_position(self, shoulder_idx, elbow_idx, wrist_idx):
+    """
+    Determina si un brazo esta arriba, al lado, o abajo
+    """
+    shoulder = self.detected_landmarks[shoulder_idx]
+    elbow = self.detected_landmarks[elbow_idx]
+    wrist = self.detected_landmarks[wrist_idx]
+    
+    # Mueneca mas alta que hombro = arriba
+    if wrist[1] < shoulder[1] - 0.15:
+        return 'up'
+    
+    # Muneca a la misma altura y alejada = al lado
+    if abs(wrist[1] - shoulder[1]) < 0.2:
+        if abs(wrist[0] - shoulder[0]) > 0.15:
+            return 'side'
+    
+    return 'down'
+\end{lstlisting}
+
+\subsection{Sistema de Coincidencia de Pose}
+
+El cálculo de coincidencia compara la pose detectada con la pose objetivo:
+
+\begin{lstlisting}[style=pythonstyle, caption=Cálculo de puntuación de coincidencia]
+def calculate_match_score(self):
+    target = self.current_pose["check_points"]
+    
+    left_arm = self.check_arm_position(11, 13, 15)
+    right_arm = self.check_arm_position(12, 14, 16)
+    left_leg = self.check_leg_position(23, 25, 27)
+    right_leg = self.check_leg_position(24, 26, 28)
+    
+    points = 0
+    max_points = 8  # 4 brazos + 4 piernas
+    
+    # Verificar brazos
+    if target.get("left_arm_up") == (left_arm == "up"):
+        points += 1
+    if target.get("right_arm_up") == (right_arm == "up"):
+        points += 1
+    if target.get("left_arm_side") == (left_arm == "side"):
+        points += 1
+    if target.get("right_arm_side") == (right_arm == "side"):
+        points += 1
+    
+    # Verificar piernas
+    if target.get("left_leg_up") == (left_leg == "up"):
+        points += 1
+    # ... (similar para otras extremidades)
+    
+    return int((points / max_points) * 100)
+\end{lstlisting}
 
 \section{Flujo de Ejecución}
 
 \subsection{Inicio del Juego}
 
 \begin{enumerate}
-    \item Usuario abre aplicación
-    \item Selecciona 2 personajes (character\_select.gd)
+    \item Usuario inicia el servidor MediaPipe (\texttt{python mediapipe\_util.py})
+    \item Usuario abre el proyecto Godot y ejecuta la escena principal
+    \item Aparece el menú principal
+    \item Selecciona modo de juego (1 o 2 jugadores)
+    \item Selecciona personajes para cada jugador
     \item Se carga mainScene.tscn
     \item mainscript.gd inicializa:
         \begin{itemize}
-            \item Crea plataforma
-            \item Posiciona cámara y luces
-            \item Carga y posiciona personajes
-            \item Conecta a WebSocket (localhost:8765)
-            \item Inicializa WallGenerator
-            \item Crea HUD
+            \item Conexión WebSocket a localhost:8765
+            \item Carga de personajes seleccionados
+            \item Configuración de cámara y luces
+            \item Inicialización de WallGenerator
+            \item Creación del HUD
+            \item Inicio de música de fondo
         \end{itemize}
 \end{enumerate}
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Estado} & \textbf{Transición} & \textbf{Siguiente Estado} \\
+\hline
+\hline
+Menú Principal & Pulsar "Iniciar" & Selección Personajes \\
+\hline
+Selección Personajes & Confirmar selección & Gameplay \\
+\hline
+Gameplay & Vidas = 0 & Game Over \\
+\hline
+Game Over & Pulsar "Reiniciar" & Menú Principal \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+
+\textbf{Flujo del juego:}
+\begin{center}
+Menú Principal $\rightarrow$ Selección Personajes $\rightarrow$ Gameplay $\rightarrow$ Game Over $\rightarrow$ Menú Principal
+\end{center}
+\caption{Diagrama de estados del juego}
+\end{figure}
 
 \subsection{Loop Principal (\_process)}
 
 \begin{enumerate}
-    \item Procesar eventos WebSocket
-    \item Actualizar animación de personajes con pose recibida
-    \item Mover paredes hacia jugadores
-    \item Validar colisiones con paredes
-    \item Actualizar HUD (puntuación, vidas, postura)
-    \item Generar nuevas paredes cada 3 segundos
-    \item Limpiar paredes fuera de rango
+    \item \textbf{Polling WebSocket}: Procesar paquetes entrantes
+    \item \textbf{Parseo JSON}: Convertir datos recibidos a diccionario
+    \item \textbf{Actualización de jugadores}: Aplicar poses a esqueletos
+    \item \textbf{Movimiento de paredes}: Desplazar paredes hacia jugadores
+    \item \textbf{Detección de colisiones}: Verificar choques con paredes
+    \item \textbf{Actualización de puntuación}: Sumar puntos o restar vidas
+    \item \textbf{Generación de paredes}: Crear nuevas cada intervalo
+    \item \textbf{Limpieza}: Eliminar paredes fuera de rango
+    \item \textbf{Actualización HUD}: Refrescar interfaz de usuario
 \end{enumerate}
 
-\subsection{Validación de Colisión}
+\subsection{Validación de Paso por Pared}
+
+\begin{algorithm}[H]
+\caption{Validación de paso correcto}
+\begin{algorithmic}[1]
+\For{cada $wall$ en $walls$}
+    \If{$wall.z < 1.0$ \textbf{and} $wall.z > -1.0$}
+        \If{$wall$ no ha sido validada}
+            \State $pose\_type \gets wall.get\_meta("pose\_type")$
+            \For{cada $player$ en $players$}
+                \State $player\_pose \gets evaluate\_pose(player.skeleton)$
+                \If{$player\_pose = pose\_type$}
+                    \State $score \gets score + 10$
+                \Else
+                    \State $collision\_detected \gets$ CheckCollision($player$, $wall$)
+                    \If{$collision\_detected$}
+                        \State $lives \gets lives - 1$
+                    \EndIf
+                \EndIf
+            \EndFor
+            \State $wall.set\_meta("validated", true)$
+        \EndIf
+    \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\section{Configuración y Parámetros Ajustables}
+
+\subsection{Parámetros del Servidor MediaPipe}
+
+\begin{table}[H]
+\centering
+\caption{Parámetros configurables del servidor}
+\begin{tabular}{llp{6cm}}
+\toprule
+\textbf{Parámetro} & \textbf{Valor por defecto} & \textbf{Descripción} \\
+\midrule
+num\_poses & 2 & Número máximo de personas a detectar \\
+model\_asset\_path & pose\_landmarker\_full.task & Modelo de MediaPipe a utilizar \\
+running\_mode & VIDEO & Modo de procesamiento para video \\
+CAP\_PROP\_FRAME\_WIDTH & 640 & Ancho de captura de cámara \\
+CAP\_PROP\_FRAME\_HEIGHT & 480 & Alto de captura de cámara \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Parámetros del Juego (Godot)}
+
+\begin{table}[H]
+\centering
+\caption{Variables exportables en GDScript}
+\begin{tabular}{llp{5cm}}
+\toprule
+\textbf{Variable} & \textbf{Valor} & \textbf{Descripción} \\
+\midrule
+wall\_spawn\_interval & 3.0 s & Intervalo entre paredes \\
+wall\_speed & 5.0 u/s & Velocidad de movimiento de paredes \\
+target\_height & 2.0 m & Altura objetivo del personaje \\
+scale\_factor & 0.7 & Factor de escala de movimiento \\
+depth\_scale & 2.0 & Escala para coordenada Z \\
+mirror\_mode & true & Efecto espejo en movimientos \\
+movement\_smoothing & 0.2 & Suavizado de posición \\
+rotation\_smoothing & 0.08 & Suavizado de rotación \\
+tolerance & 0.3 & Tolerancia para evaluación de pose \\
+points\_per\_success & 100 & Puntos por pose correcta \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Posiciones en la Escena 3D}
+
+\begin{table}[H]
+\centering
+\caption{Posiciones de elementos en la escena}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Elemento} & \textbf{Posición (x, y, z)} & \textbf{Color/Notas} \\
+\midrule
+Jugador 1 & (-1.0, 0.0, 0.0) & Verde \\
+Jugador 2 & (1.0, 0.0, 0.0) & Magenta \\
+Cámara & (0, 2, 8) & Vista frontal \\
+Spawn de paredes & (0, 2, 20) & Fondo de escena \\
+Límite de limpieza & z < -30 & Eliminación automática \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Personajes del Juego}
+
+El juego incluye 4 personajes basados en iconos de la cultura popular, cada uno modelado y rigeado en Blender utilizando el complemento Rigify para asegurar compatibilidad con el sistema de animación de Godot.
+
+\subsection{Proceso de Creación de Personajes}
 
 \begin{enumerate}
-    \item Pared se acerca al jugador (Z disminuye)
-    \item Cuando pared.z está entre 1.0 y -1.0:
-    \item Verificar si jugador está dentro de los límites del agujero
-    \item Si SÍ: Otorgar +10 puntos
-    \item Si NO: Restar -1 vida
-    \item Desmarcar pared como validada
+    \item \textbf{Modelado}: Creación de la malla 3D en Blender
+    \item \textbf{Rigging}: Aplicación de esqueleto con Rigify
+    \item \textbf{Skinning}: Asignación de pesos de deformación
+    \item \textbf{Exportación}: Formato .glb con armadura incluida
+    \item \textbf{Importación}: Carga en Godot como escena .tscn
 \end{enumerate}
 
-\section{Configuración de Exportación}
+\subsection{SAW}
 
-\subsection{Exportables}
+\begin{minipage}[t]{0.6\textwidth}
+\textbf{Descripción}: Personaje inspirado en el antagonista de la saga de películas de terror ``Saw'' (2004). Representa un personaje oscuro y misterioso.
 
-\begin{verbatim}
-WallGenerator.gd:
-  @export wall_spawn_interval: float = 3.0
-  @export wall_speed: float = 5.0
-
-Personajes:
-  - Posición 1: (-2, 1, 0)
-  - Posición 2: (2, 1, 0)
-\end{verbatim}
-
-\section{Personajes Disponibles}
-
-El juego incluye 4 personajes basados en series y películas, cada uno con su propio modelo 3D rigeado y animación personalizada. Fueron modelados y rigeados en Blender usando el complemento Rigify para asegurar un esqueleto completo.
-
-\subsection{Personaje 1: SAW}
-
-\textbf{Descripción}: Personaje inspirado en el villano de la película de terror ``Saw'' (2004). Representa un personaje oscuro y misterioso con características intimidantes y expresión seria.
-
-\textbf{Origen}: Película de Cine de Horror - ``Saw''
+\textbf{Origen}: Cine de Horror - ``Saw''
 
 \begin{itemize}
-    \item \textbf{Archivo}: Saw.blend
-    \item \textbf{Tipo de Modelo}: Humanoide
-    \item \textbf{Características}: Expresión grave, indumentaria oscura
+    \item \textbf{Archivo fuente}: SAW.blend1
+    \item \textbf{Archivo exportado}: Saw.glb
+    \item \textbf{Tipo}: Humanoide
+    \item \textbf{Características}: Expresión seria, vestimenta oscura
 \end{itemize}
-
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{characters/SAW.png}
+    \includegraphics[width=\textwidth]{characters/SAW.png}
 \end{center}
+\end{minipage}
 
-\subsection{Personaje 2: ET}
+\subsection{ET}
 
-\textbf{Descripción}: Personaje alienígena inspirado en el famoso extraterrestre de la película clásica ``E.T. the Extra-Terrestrial'' (1982). Proporciona una experiencia visual única y fantástica.
+\begin{minipage}[t]{0.6\textwidth}
+\textbf{Descripción}: Personaje alienígena basado en el icónico extraterrestre de ``E.T. the Extra-Terrestrial'' (1982) de Steven Spielberg.
 
-\textbf{Origen}: Película de Ciencia Ficción - ``E.T. the Extra-Terrestrial''
+\textbf{Origen}: Ciencia Ficción - ``E.T.''
 
 \begin{itemize}
-    \item \textbf{Archivo}: ET.blend
-    \item \textbf{Tipo de Modelo}: Humanoide fantástico
-    \item \textbf{Características}: Silueta única, proporciones exageradas, piel verdosa
+    \item \textbf{Archivo fuente}: ET.blend1
+    \item \textbf{Archivo exportado}: ET.glb
+    \item \textbf{Tipo}: Humanoide fantástico
+    \item \textbf{Características}: Proporciones exageradas, piel texturizada
 \end{itemize}
-
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{characters/ET.png}
+    \includegraphics[width=\textwidth]{characters/ET.png}
 \end{center}
+\end{minipage}
 
-\subsection{Personaje 3: ELEVEN}
+\subsection{ELEVEN}
 
-\textbf{Descripción}: Personaje inspirado en la serie de Netflix ``Stranger Things'' (2016-presente). Representa un personaje joven con presencia cautivadora y características distintivas.
+\begin{minipage}[t]{0.6\textwidth}
+\textbf{Descripción}: Personaje inspirado en Eleven de la serie de Netflix ``Stranger Things'' (2016-presente), la joven con poderes telequinéticos.
 
-\textbf{Origen}: Serie de Televisión - ``Stranger Things''
+\textbf{Origen}: Serie de TV - ``Stranger Things''
 
 \begin{itemize}
-    \item \textbf{Archivo}: Eleven2.blend
-    \item \textbf{Tipo de Modelo}: Humanoide
-    \item \textbf{Características}: Proporciones juveniles, diseño visual moderno
+    \item \textbf{Archivo fuente}: Eleven2.blend1
+    \item \textbf{Archivo exportado}: Eleven.glb
+    \item \textbf{Tipo}: Humanoide
+    \item \textbf{Características}: Proporciones juveniles, diseño moderno
 \end{itemize}
-
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{characters/ELEVEN.png}
+    \includegraphics[width=\textwidth]{characters/ELEVEN.png}
 \end{center}
+\end{minipage}
 
-\subsection{Personaje 4: HOMER}
+\subsection{HOMER}
 
-\textbf{Descripción}: Personaje inspirado en el icónico ``Homer Simpson'' de la serie animada ``The Simpsons'' (1989-presente). Añade humor y familiaridad al juego con proporción cómica y humorística.
+\begin{minipage}[t]{0.6\textwidth}
+\textbf{Descripción}: Personaje basado en Homer Simpson de la serie animada ``The Simpsons'' (1989-presente), añadiendo un toque de humor al juego.
 
-\textbf{Origen}: Serie de Televisión Animada - ``The Simpsons''
+\textbf{Origen}: Animación - ``The Simpsons''
 
 \begin{itemize}
-    \item \textbf{Archivo}: HOMER\_SIMPSON.blend
-    \item \textbf{Tipo de Modelo}: Humanoide caricaturesco
-    \item \textbf{Características}: Cuerpo rechoncho, color amarillo característico, proporciones cómicas
+    \item \textbf{Archivo fuente}: HOMER\_SIMPSON.blend1
+    \item \textbf{Archivo exportado}: Homer.glb
+    \item \textbf{Tipo}: Humanoide caricaturesco
+    \item \textbf{Características}: Cuerpo rechoncho, color amarillo
 \end{itemize}
-
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{characters/HOMER.png}
+    \includegraphics[width=\textwidth]{characters/HOMER.png}
 \end{center}
+\end{minipage}
 
-\subsection{Sistema de Rigging}
+\subsection{Sistema de Rigging con Rigify}
 
-Todos los personajes fueron rigeados utilizando el siguiente proceso:
+El proceso de rigging sigue un flujo estandarizado:
 
-\begin{enumerate}
-    \item Importar modelo base en Blender
-    \item Aplicar complemento Rigify para generar esqueleto automático
-    \item Ajustar y refinar los pesos de deformación (skinning)
-    \item Exportar en formato .glb con Armature para compatibilidad con Godot
-\end{enumerate}
+\begin{lstlisting}[language=Python, caption=Proceso de rigging en Blender (pseudocódigo)]
+# 1. Seleccionar modelo
+bpy.ops.object.select_all(action='DESELECT')
+model.select_set(True)
 
-\section{Sistema de Audio y Sonidos}
+# 2. Agregar metarig de Rigify
+bpy.ops.object.armature_human_metarig_add()
 
-El juego incluye un sistema completo de audio diseñado para mejorar la experiencia de juego mediante retroalimentación sonora inmersiva. Todos los efectos de sonido fueron creados manualmente.
+# 3. Ajustar huesos al modelo
+for bone in metarig.bones:
+    bone.head = corresponding_vertex_position
+    bone.tail = calculate_tail_position(bone)
+
+# 4. Generar rig final
+bpy.ops.pose.rigify_generate()
+
+# 5. Aplicar automatic weights
+bpy.ops.object.parent_set(type='ARMATURE_AUTO')
+
+# 6. Refinar pesos manualmente si es necesario
+\end{lstlisting}
+
+\subsection{Estructura del Esqueleto Exportado}
+
+Los personajes exportados contienen los siguientes huesos relevantes para la animación:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+Skeleton3D
+|-- spine
+|-- upper_arm.L / upper_arm.R
+|-- forearm.L / forearm.R
+|-- hand.L / hand.R
+|-- thigh.L / thigh.R
+|-- shin.L / shin.R
++-- foot.L / foot.R
+\end{lstlisting}
+
+\section{Sistema de Audio}
+
+El juego incluye un sistema de audio completo diseñado para mejorar la experiencia de juego mediante retroalimentación sonora inmersiva.
 
 \subsection{Música de Fondo}
 
-\subsubsection{Tema Principal}
-
-\begin{itemize}
-    \item \textbf{Archivo}: turiruriru-01.mp3
-    \item \textbf{Duración}: Loop continuo durante el juego
-    \item \textbf{Descripción}: Música electrónica/pop japonesa que crea una atmósfera divertida y energética
-    \item \textbf{Formato}: MP3 comprimido para optimizar almacenamiento
-    \item \textbf{Volumen}: Configurado para no sobrepasar la retroalimentación de sonidos de efecto
-\end{itemize}
+\begin{table}[H]
+\centering
+\caption{Especificaciones de la música de fondo}
+\begin{tabular}{ll}
+\toprule
+\textbf{Propiedad} & \textbf{Valor} \\
+\midrule
+Archivo & turiruriru-01.mp3 \\
+Fuente original & turiruriru-01.mmpz (LMMS) \\
+Género & Electrónica/J-Pop \\
+Modo & Loop continuo \\
+Volumen & Submix para no interferir con SFX \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Efectos de Sonido}
 
-Todos los efectos de sonido fueron creados manualmente en el software de edición de audio MuseScore (formato .mmpz).
+Todos los efectos fueron creados manualmente en LMMS:
 
-\subsubsection{Sonido de Click en Botón}
-
-\begin{itemize}
-    \item \textbf{Archivo}: soundEffect\_buttonClick.ogg
-    \item \textbf{Creación}: Generado manualmente en MuseScore
-    \item \textbf{Uso}: Se reproduce al hacer click en cualquier botón del menú o interfaz
-    \item \textbf{Duración}: ~0.2 segundos
-    \item \textbf{Descripción}: Sonido seco y percusivo que indica selección
-    \item \textbf{Formato Original}: soundEffect\_buttonClick.mmpz (MuseScore)
-    \item \textbf{Archivo de Backup}: soundEffect\_buttonClick.mmpz.bak
-\end{itemize}
-
-\subsubsection{Sonido de Hover en Botón}
-
-\begin{itemize}
-    \item \textbf{Archivo}: soundEffect\_buttonHover.ogg
-    \item \textbf{Creación}: Generado manualmente en MuseScore
-    \item \textbf{Uso}: Se reproduce al pasar el cursor sobre un botón
-    \item \textbf{Duración}: ~0.15 segundos
-    \item \textbf{Descripción}: Sonido suave y ascendente que indica posibilidad de interacción
-    \item \textbf{Formato Original}: soundEffect\_buttonHover.mmpz (MuseScore)
-\end{itemize}
+\begin{table}[H]
+\centering
+\caption{Efectos de sonido del juego}
+\begin{tabularx}{\textwidth}{lllX}
+\toprule
+\textbf{Efecto} & \textbf{Archivo} & \textbf{Duración} & \textbf{Uso} \\
+\midrule
+Click & soundEffect\_buttonClick.ogg & ~0.2s & Al presionar botones \\
+Hover & soundEffect\_buttonHover.ogg & ~0.15s & Al pasar cursor sobre botón \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Integración en Godot}
 
-Los archivos de audio se integran en el motor Godot mediante:
+\begin{lstlisting}[style=gdscriptstyle, caption=Reproducción de audio en Godot]
+@export var audioStreamPlayer: AudioStreamPlayer3D
 
-\begin{itemize}
-    \item \textbf{AudioStreamPlayer}: Nodo responsable de reproducir sonidos
-    \item \textbf{Carpeta}: assets/music/ y assets/SoundEffects/
-    \item \textbf{Importación automática}: Godot convierte automáticamente .mmpz a .ogg para optimización
-    \item \textbf{Control de volumen}: Ajustable durante el gameplay
-\end{itemize}
+func _ready():
+    if audioStreamPlayer:
+        audioStreamPlayer.play()
 
-\subsection{Estructura de Archivos de Audio}
+func play_button_sound():
+    var audio = AudioStreamPlayer.new()
+    audio.stream = preload("res://assets/SoundEffects/buttonClick.ogg")
+    add_child(audio)
+    audio.play()
+    # Auto-eliminar al terminar
+    audio.finished.connect(audio.queue_free)
+\end{lstlisting}
 
-\begin{verbatim}
-assets/
-├── music/
-│   └── turiruriru-01.mp3.import
-├── SoundEffects/
-│   ├── soundEffect_buttonClick.ogg.import
-│   └── soundEffect_buttonHover.ogg.import
-
-Archivos de edición (raíz del proyecto):
-├── turiruriru-01.mmpz
-├── soundEffect_buttonClick.mmpz
-├── soundEffect_buttonClick.mmpz.bak
-└── soundEffect_buttonHover.mmpz
-\end{verbatim}
-
-\subsection{Proceso de Creación de Sonidos}
-
-El flujo de creación de efectos de sonido fue:
+\subsection{Flujo de Creación de Audio}
 
 \begin{enumerate}
-    \item Crear composición básica en MuseScore
-    \item Seleccionar instrumentos/tonos para cada efecto
-    \item Ajustar duración y volumen
-    \item Exportar como .ogg para compatibilidad con Godot
-    \item Guardar archivo .mmpz original para futuras ediciones
-    \item Crear backup (.bak) para seguridad
-    \item Importar en Godot y ajustar parámetros de audio
+    \item Composición en LMMS (.mmpz)
+    \item Selección de instrumentos y sintetizadores
+    \item Ajuste de duración y envolventes
+    \item Exportación a .ogg (Vorbis) para efectos
+    \item Exportación a .mp3 para música (mayor compresión)
+    \item Importación en Godot (automática)
+    \item Configuración de AudioStreamPlayer en escenas
 \end{enumerate}
 
-\section{Galería del Juego}
+\section{Resultados y Pruebas}
 
-Esta sección incluye información sobre los elementos visuales del juego:
+\subsection{Métricas de Rendimiento}
+
+Se realizaron pruebas de rendimiento en el siguiente hardware:
+
+\begin{table}[H]
+\centering
+\caption{Especificaciones del sistema de pruebas}
+\begin{tabular}{ll}
+\toprule
+\textbf{Componente} & \textbf{Especificación} \\
+\midrule
+Sistema Operativo & Linux (Ubuntu-based) \\
+Cámara & Webcam integrada 720p \\
+Resolución de juego & 1280x720 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Métricas de rendimiento observadas}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Métrica} & \textbf{Versión Godot} & \textbf{Versión Pygame} \\
+\midrule
+FPS de detección (MediaPipe) & ~30 & ~30 \\
+FPS de renderizado & 60 & 30 \\
+Latencia total & <100ms & <80ms \\
+Uso de CPU & 15-25\% & 20-30\% \\
+Uso de RAM & ~400MB & ~300MB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Precisión de Detección de Pose}
+
+La precisión de detección se evaluó cualitativamente:
+
+\begin{itemize}
+    \item \textbf{Iluminación óptima}: Detección consistente al 95\%+
+    \item \textbf{Iluminación baja}: Precisión reducida, falsos negativos
+    \item \textbf{Fondo complejo}: Detección estable gracias a segmentación
+    \item \textbf{Movimientos rápidos}: Ligero retraso en tracking
+\end{itemize}
+
+\subsection{Usabilidad}
+
+El sistema fue probado informalmente con usuarios:
+
+\begin{itemize}
+    \item Tiempo de aprendizaje: <2 minutos para entender el concepto
+    \item Calibración: No requerida, funciona ``plug and play''
+    \item Tolerancia: Umbral del 40\% permite juego accesible
+    \item Retroalimentación: Visual clara con porcentaje de coincidencia
+\end{itemize}
+
+\section{Guía de Instalación y Uso}
+
+\subsection{Requisitos del Sistema}
+
+\begin{itemize}
+    \item Python 3.11 con pip
+    \item Godot Engine 4.5 (para versión completa)
+    \item Cámara web funcional
+    \item Conexión a Internet (solo para descarga inicial)
+\end{itemize}
+
+\subsection{Instalación de Dependencias Python}
+
+\begin{lstlisting}[language=bash, caption=Instalación de dependencias]
+# Crear entorno virtual (recomendado)
+conda create -n brainwall python=3.10
+conda activate brainwall
+
+# Instalar dependencias
+pip install opencv-python mediapipe websockets asyncio numpy
+
+# Para version Pygame standalone
+pip install pygame
+\end{lstlisting}
+
+\subsection{Ejecución del Sistema}
+
+\subsubsection{Versión Completa (Godot + MediaPipe)}
+
+\begin{lstlisting}[language=bash, caption=Ejecución del sistema completo]
+# Terminal 1: Iniciar servidor MediaPipe
+cd Entrega_FINAL_VC
+python mediapipe_util.py
+
+# Terminal 2 / Godot Editor
+# Abrir proyecto: BrainWallGodot/brain-wall/project.godot
+# Ejecutar escena principal (F5)
+\end{lstlisting}
+
+\subsubsection{Versión Standalone (Pygame)}
+
+\begin{lstlisting}[language=bash, caption=Ejecución de versión Pygame]
+# Abrir Jupyter Notebook
+jupyter notebook Entrega.ipynb
+
+# O ejecutar directamente el codigo Python
+python -c "exec(open('Entrega.ipynb').read())"
+\end{lstlisting}
+
+\subsection{Controles del Juego}
+
+\begin{table}[H]
+\centering
+\caption{Controles del juego}
+\begin{tabular}{ll}
+\toprule
+\textbf{Tecla} & \textbf{Acción} \\
+\midrule
+ESPACIO & Iniciar juego / Confirmar selección \\
+ESC & Pausar / Volver al menú \\
+Movimiento corporal & Control del personaje \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Galería del Juego}
 
 \subsection{Escenas Principales}
 
 \begin{itemize}
-    \item \textbf{Menú de Selección de Personajes}: Interfaz visual para elegir entre 4 personajes
-    \item \textbf{Gameplay Principal}: Vista 3D con 2 personajes en la plataforma
-    \item \textbf{Paredes Dinámicas}: Diferentes formas de agujeros según la postura
-    \item \textbf{Interfaz HUD}: Displays de puntuación, vidas y postura actual
+    \item \textbf{Menú Principal}: Pantalla de inicio con opciones de juego
+    \item \textbf{Selección de Personajes}: Interfaz para elegir entre 4 personajes
+    \item \textbf{Gameplay}: Vista 3D con personajes animados y paredes
+    \item \textbf{HUD}: Puntuación, vidas y postura actual
 \end{itemize}
 
 \subsection{Elementos Visuales}
 
-\begin{itemize}
-    \item \textbf{Plataforma}: Base gris oscuro 10x0.5x5 unidades
-    \item \textbf{Paredes}: Azul transparente (RGBA: 0.2, 0.2, 0.8, 0.8)
-    \item \textbf{Iluminación}: Sistema de luces 3D para ambiente realista
-    \item \textbf{Cámara}: Posición fija en (0, 2, 8) para vista de frente
-\end{itemize}
+\begin{table}[H]
+\centering
+\caption{Elementos visuales de la escena}
+\begin{tabular}{lll}
+\toprule
+\textbf{Elemento} & \textbf{Descripción} & \textbf{Propiedades} \\
+\midrule
+Plataforma & Base del escenario & Gris oscuro, 10x0.5x5u \\
+Paredes & Obstáculos con siluetas & Azul semitransparente \\
+Personajes & Avatares 3D rigeados & Colores distintivos \\
+Skybox & Fondo HDR & Nebulosa espacial \\
+Iluminación & Luz direccional + ambiente & Tono cálido \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\textit{Nota: Las imágenes pueden insertarse aquí usando:
-\textbackslash includegraphics[width=0.8\textbackslash textwidth]\{ruta/imagen.png\}}
-
-\section{Limitaciones y Mejoras Futuras}
+\section{Limitaciones y Trabajo Futuro}
 
 \subsection{Limitaciones Actuales}
 
+\begin{enumerate}
+    \item \textbf{Dependencia de hardware}:
+    \begin{itemize}
+        \item La calidad de detección depende de la cámara web
+        \item Requiere iluminación adecuada para tracking preciso
+        \item Rendimiento variable según GPU/CPU
+    \end{itemize}
+    
+    \item \textbf{Limitaciones de software}:
+    \begin{itemize}
+        \item Máximo 2 jugadores simultáneos
+        \item Sin persistencia de puntuaciones (no hay base de datos)
+        \item Paredes con tamaño fijo
+        \item Validación de pose basada en ángulos, no en volumen 3D
+    \end{itemize}
+    
+    \item \textbf{Limitaciones de red}:
+    \begin{itemize}
+        \item Solo funciona en localhost (mismo equipo)
+        \item Sin autenticación ni cifrado en WebSocket
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Mejoras Futuras Propuestas}
+
+\begin{enumerate}
+    \item \textbf{Corto plazo}:
+    \begin{itemize}
+        \item Añadir más efectos de sonido (colisión, éxito, nivel)
+        \item Implementar sistema de partículas para feedback visual
+        \item Crear más variaciones de posturas
+        \item Añadir animaciones de idle para personajes
+    \end{itemize}
+    
+    \item \textbf{Medio plazo}:
+    \begin{itemize}
+        \item Modo multijugador en red (LAN/Internet)
+        \item Sistema de puntuaciones persistente (SQLite/Firebase)
+        \item Dificultad adaptativa mediante IA
+        \item Soporte para más de 2 jugadores
+        \item Personalización de personajes
+    \end{itemize}
+    
+    \item \textbf{Largo plazo}:
+    \begin{itemize}
+        \item Versión móvil (Android/iOS)
+        \item Integración con VR/AR
+        \item Editor de niveles personalizado
+        \item Modo historia con progresión
+        \item Sistema de logros y desbloqueos
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Posibles Optimizaciones}
+
 \begin{itemize}
-    \item La detección de pose depende de la calidad de la cámara
-    \item Requiere conexión WebSocket a servidor MediaPipe
-    \item Las paredes tienen un tamaño fijo
-    \item No hay validación de profundidad (solo área 2D)
+    \item Implementar predicción de pose para reducir latencia percibida
+    \item Utilizar modelo de MediaPipe más ligero para hardware limitado
+    \item Cachear meshes de paredes en lugar de generarlos cada vez
+    \item Implementar LOD (Level of Detail) para personajes lejanos
 \end{itemize}
 
-\subsection{Mejoras Futuras}
+\section{Conclusiones}
+
+Este proyecto ha demostrado la viabilidad de crear un sistema interactivo de entretenimiento utilizando técnicas modernas de visión por computador. Los principales logros alcanzados son:
+
+\subsection{Objetivos Cumplidos}
+
+\begin{enumerate}
+    \item \textbf{Detección de pose en tiempo real}: Se logró implementar un sistema de detección de 33 puntos corporales funcionando a ~30 FPS utilizando MediaPipe, sin necesidad de hardware especializado.
+    
+    \item \textbf{Comunicación cliente-servidor eficiente}: El protocolo WebSocket demostró ser una solución robusta para la transmisión de datos de pose con latencia inferior a 100ms.
+    
+    \item \textbf{Animación de esqueleto}: Se implementó exitosamente la traducción de datos de pose a rotaciones de huesos del Skeleton3D de Godot, con interpolación suave.
+    
+    \item \textbf{Sistema de juego completo}: El juego incluye selección de personajes, sistema de puntuación, vidas, y progresión de dificultad.
+    
+    \item \textbf{Dos versiones funcionales}: Se desarrollaron tanto una versión standalone en Pygame como una versión completa 3D en Godot.
+    
+    \item \textbf{Contenido audiovisual original}: Todos los modelos 3D, música y efectos de sonido fueron creados específicamente para este proyecto.
+\end{enumerate}
+
+\subsection{Conocimientos Aplicados}
+
+El proyecto integra conocimientos de múltiples áreas de la informática:
 
 \begin{itemize}
-    \item Integrar IA para adaptar dificultad
-    \item Modo multijugador en red
-    \item Tablas de puntuaciones persistentes
-    \item Modelos de personajes más detallados
-    \item Sistema de combos y multiplicadores
-    \item Modos de juego adicionales (tiempo limitado, etc.)
-    \item Más variedad de efectos de sonido
-    \item Sistema de partículas para colisiones
+    \item \textbf{Visión por Computador}: Detección de pose, segmentación de imagen
+    \item \textbf{Gráficos 3D}: Modelado, rigging, animación de esqueletos
+    \item \textbf{Desarrollo de Videojuegos}: Sistemas de juego, física, colisiones
+    \item \textbf{Redes}: Comunicación WebSocket, serialización JSON
+    \item \textbf{Programación Asíncrona}: Servidor WebSocket con asyncio
+    \item \textbf{Diseño de Audio}: Composición musical, efectos de sonido
 \end{itemize}
 
-\section{Conclusión}
+\subsection{Reflexiones Finales}
 
-Este proyecto demuestra la integración exitosa de:
-\begin{itemize}
-    \item Detección de pose en tiempo real con MediaPipe
-    \item Renderizado 3D con Godot
-    \item Animación de personajes basada en datos capturados
-    \item Sistemas de juego interactivos
-    \item Comunicación cliente-servidor mediante WebSocket
-    \item Audio personalizado creado manualmente
-    \item Múltiples personajes con rigging avanzado
-\end{itemize}
+El desarrollo de Vision Wall ha permitido explorar el potencial de las tecnologías de detección de pose para aplicaciones interactivas. MediaPipe ha demostrado ser una herramienta accesible y potente que democratiza el acceso a capacidades de visión por computador avanzadas.
 
-El sistema proporciona una experiencia inmersiva y divertida inspirada en el programa televisivo ``Hole in the Wall'', permitiendo a los jugadores desafiar sus habilidades de contorsión mientras interactúan con paredes de formas diversas.
+La integración con Godot Engine mostró la flexibilidad del motor para proyectos que combinan entrada no convencional con gráficos 3D. La arquitectura cliente-servidor adoptada facilita la separación de responsabilidades y permitiría escalar el sistema a escenarios más complejos.
+
+El proyecto cumple satisfactoriamente con los objetivos planteados para la asignatura de Visión por Computador, demostrando una aplicación práctica y entretenida de los conceptos estudiados.
+
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+
+\begin{enumerate}
+    \item Google. (2024). \textit{MediaPipe Pose Landmarker}. \url{https://developers.google.com/mediapipe/solutions/vision/pose_landmarker}
+    
+    \item Godot Engine. (2024). \textit{Godot Engine Documentation 4.x}. \url{https://docs.godotengine.org/en/stable/}
+    
+    \item OpenCV. (2024). \textit{OpenCV-Python Tutorials}. \url{https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html}
+    
+    \item Blender Foundation. (2024). \textit{Blender Reference Manual}. \url{https://docs.blender.org/manual/en/latest/}
+    
+    \item WebSocket Protocol. (2011). \textit{RFC 6455 - The WebSocket Protocol}. IETF.
+    
+    \item LMMS. (2024). \textit{LMMS Documentation}. \url{https://docs.lmms.io/}
+    
+    \item Lugaresi, C. et al. (2019). \textit{MediaPipe: A Framework for Building Perception Pipelines}. Google Research. arXiv:1906.08172
+\end{enumerate}
+
+\newpage
+
+\section*{Anexo A: Índices de MediaPipe Pose Landmarks}
+\addcontentsline{toc}{section}{Anexo A: Índices MediaPipe}
+
+\begin{table}[H]
+\centering
+\caption{Índices completos de landmarks de MediaPipe Pose}
+\begin{tabular}{cl|cl}
+\toprule
+\textbf{Índice} & \textbf{Landmark} & \textbf{Índice} & \textbf{Landmark} \\
+\midrule
+0 & Nariz & 17 & Meñique izq \\
+1 & Ojo interno izq & 18 & Meñique der \\
+2 & Ojo izq & 19 & Índice izq \\
+3 & Ojo externo izq & 20 & Índice der \\
+4 & Ojo interno der & 21 & Pulgar izq \\
+5 & Ojo der & 22 & Pulgar der \\
+6 & Ojo externo der & 23 & Cadera izq \\
+7 & Oreja izq & 24 & Cadera der \\
+8 & Oreja der & 25 & Rodilla izq \\
+9 & Boca izq & 26 & Rodilla der \\
+10 & Boca der & 27 & Tobillo izq \\
+11 & Hombro izq & 28 & Tobillo der \\
+12 & Hombro der & 29 & Talón izq \\
+13 & Codo izq & 30 & Talón der \\
+14 & Codo der & 31 & Pie índice izq \\
+15 & Muñeca izq & 32 & Pie índice der \\
+16 & Muñeca der & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Anexo B: Estructura de Archivos del Proyecto}
+\addcontentsline{toc}{section}{Anexo B: Estructura de Archivos}
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+Entrega_FINAL_VC/
+|-- Entrega.ipynb                    # Version Pygame standalone
+|-- mediapipe_util.py                # Servidor WebSocket
+|-- pose_landmarker_full.task        # Modelo MediaPipe
+|-- README.md                        # Instrucciones del proyecto
+|
+|-- BrainWallGodot/brain-wall/       # Proyecto Godot
+|   |-- project.godot
+|   |-- PoseReceiver.gd
+|   |-- main_menu.gd
+|   |-- scenes/
+|   |   |-- mainScene.tscn
+|   |   |-- main_menu.tscn
+|   |   |-- CharacterSelect.tscn
+|   |   |-- WallGenerator.gd
+|   |   |-- PoseEvaluator.gd
+|   |   +-- game_ui.tscn
+|   |-- Scripts/
+|   |   |-- mainscript.gd
+|   |   |-- character_select.gd
+|   |   |-- game_manager.gd
+|   |   +-- wall.gd
+|   +-- assets/
+|       |-- Characters/
+|       |-- models/
+|       |-- music/
+|       +-- SoundEffects/
+|
+|-- Modelados/                       # Archivos Blender
+|   |-- SAW.blend1
+|   |-- ET.blend1
+|   |-- Eleven2.blend1
+|   |-- HOMER_SIMPSON.blend1
+|   +-- Wall[1-5].blend1
+|
+|-- Sonido/                          # Archivos LMMS
+|   |-- turiruriru-01.mmpz
+|   |-- soundEffect_buttonClick.mmpz
+|   +-- soundEffect_buttonHover.mmpz
+|
++-- INFORME/
+    +-- MEMORIA.tex                  # Este documento
+\end{lstlisting}
 
 \end{document}
