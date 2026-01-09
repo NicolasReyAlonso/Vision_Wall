@@ -103,3 +103,4 @@
 \contentsline {section}{Referencias}{37}{section*.19}%
 \contentsline {section}{Anexo A: Índices MediaPipe}{38}{section*.20}%
 \contentsline {section}{Anexo B: Estructura de Archivos}{38}{section*.22}%
+\contentsline {section}{Anexo C: GitHub del Proyecto}{39}{section*.23}%

@@ -1,9 +1,9 @@
-PWD /home/nicolo/Desktop/ULPGC/Cuarto/VC/Entrega_FINAL_VC/INFORME
+PWD /home/nicololo/Desktop/ULPGC/Cuarto/VC/Entrega_FINAL_VC/INFORME
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/nicolo/Desktop/ULPGC/Cuarto/VC/Entrega_FINAL_VC/INFORME/MEMORIA.tex
+INPUT /home/nicololo/Desktop/ULPGC/Cuarto/VC/Entrega_FINAL_VC/INFORME/MEMORIA.tex
 OUTPUT MEMORIA.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -513,6 +513,11 @@ INPUT ./ulpgc_header.png
 INPUT ./ulpgc_header.png
 INPUT ./ulpgc_header.png
 INPUT ./ulpgc_header.png
+INPUT ./github_logo.png
+INPUT ./github_logo.png
+INPUT ./github_logo.png
+INPUT ./github_logo.png
+INPUT ./github_logo.png
 INPUT ./ulpgc_header.png
 INPUT ./ulpgc_header.png
 INPUT ./ulpgc_header.png
