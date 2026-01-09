@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Chibi style: big head, pastel colors -->
+  <defs>
+    <filter id="s" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#s)">
+    <circle cx="256" cy="170" r="110" fill="#ffe0c4" stroke="#f0c4a8" stroke-width="2"/>
+    <rect x="190" y="260" width="132" height="160" rx="28" fill="#a3d8f4"/>
+    <ellipse cx="220" cy="180" rx="18" ry="22" fill="#fff"/>
+    <ellipse cx="292" cy="180" rx="18" ry="22" fill="#fff"/>
+    <circle cx="220" cy="186" r="8" fill="#2b2b2b"/>
+    <circle cx="292" cy="186" r="8" fill="#2b2b2b"/>
+    <path d="M230 214 Q256 236 282 214" stroke="#8a4a2b" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="256" cy="520" rx="120" ry="24" fill="#000" fill-opacity="0.12"/>
+  </g>
+</svg>

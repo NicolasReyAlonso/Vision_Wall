@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Fondo transparente -->
+  <defs>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Cuerpo (camiseta) -->
+  <g id="body" transform="translate(0,40)">
+    <ellipse cx="256" cy="360" rx="110" ry="70" fill="#ff7f50" filter="url(#shadow)"/>
+    <rect x="180" y="260" width="152" height="160" rx="36" ry="36" fill="#ff7f50"/>
+    <!-- Brazos -->
+    <ellipse cx="140" cy="320" rx="28" ry="44" fill="#ffd1a9"/>
+    <ellipse cx="372" cy="320" rx="28" ry="44" fill="#ffd1a9"/>
+    <rect x="110" y="300" width="60" height="26" rx="12" fill="#ff7f50"/>
+    <rect x="342" y="300" width="60" height="26" rx="12" fill="#ff7f50"/>
+  </g>
+
+  <!-- Piernas (simples) -->
+  <g id="legs">
+    <rect x="206" y="410" width="36" height="70" rx="10" fill="#2f2f2f"/>
+    <rect x="270" y="410" width="36" height="70" rx="10" fill="#2f2f2f"/>
+    <ellipse cx="224" cy="492" rx="22" ry="14" fill="#2f2f2f"/>
+    <ellipse cx="288" cy="492" rx="22" ry="14" fill="#2f2f2f"/>
+  </g>
+
+  <!-- Cabeza y cara -->
+  <g id="head">
+    <circle cx="256" cy="180" r="84" fill="#ffd1a9" stroke="#e6b18a" stroke-width="2"/>
+    <!-- Ojos -->
+    <ellipse cx="232" cy="170" rx="12" ry="16" fill="#ffffff"/>
+    <ellipse cx="280" cy="170" rx="12" ry="16" fill="#ffffff"/>
+    <circle cx="232" cy="174" r="6" fill="#1f1f1f"/>
+    <circle cx="280" cy="174" r="6" fill="#1f1f1f"/>
+    <!-- Mejillas -->
+    <circle cx="212" cy="192" r="8" fill="#ffb0a0" opacity="0.9"/>
+    <circle cx="300" cy="192" r="8" fill="#ffb0a0" opacity="0.9"/>
+    <!-- Boca sonriente -->
+    <path d="M230 208 Q256 228 282 208" stroke="#7a3a1f" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Pelo simple estilo cartoon -->
+  <g id="hair">
+    <path d="M188 150 C200 110, 236 96, 256 98 C276 96, 312 110, 324 150 C308 136, 263 132, 256 136 C249 132, 204 136, 188 150 Z" fill="#3b2f2f"/>
+    <path d="M188 150 C200 170, 236 176, 256 176 C276 176, 312 170, 324 150" fill="#2b2323" opacity="0.9"/>
+  </g>
+
+  <!-- Accesorios de público: bufanda y cartel sencillo -->
+  <g id="accessories">
+    <rect x="164" y="236" width="184" height="18" rx="9" fill="#ffd700"/>
+    <text x="256" y="248" font-family="Arial, Helvetica, sans-serif" font-size="12" text-anchor="middle" fill="#3b2f2f" font-weight="700">¡VAMOS!</text>
+  </g>
+
+  <!-- Sombra debajo del personaje -->
+  <ellipse cx="256" cy="520" rx="140" ry="28" fill="#000" fill-opacity="0.12"/>
+</svg>

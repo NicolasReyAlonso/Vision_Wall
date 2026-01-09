@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtrm6ji0godlu"]
+
+[ext_resource type="PackedScene" uid="uid://croa7b6aqfk8u" path="res://assets/Walls/Wall5.glb" id="1_18j8e"]
+[ext_resource type="Material" uid="uid://dtjfcjwyf1jug" path="res://assets/Walls/Materials/wall_4.tres" id="2_mmeg1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mmeg1"]
+size = Vector3(7.9154663, 3.3433228, 0.40344238)
+
+[node name="Wall5" instance=ExtResource("1_18j8e")]
+
+[node name="Plane" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_mmeg1")
+
+[node name="Area3D" type="Area3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0066833496, 7.3939795, -0.06365967)
+shape = SubResource("BoxShape3D_mmeg1")

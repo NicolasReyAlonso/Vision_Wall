@@ -1,50 +1,20 @@
-[gd_scene load_steps=38 format=3 uid="uid://bnl20wr3lqhow"]
+[gd_scene load_steps=33 format=3 uid="uid://g2nkc5owg1uh"]
 
-[ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://scenes/mainscript.gd" id="1_ki6c0"]
-[ext_resource type="PackedScene" uid="uid://hkb6si4cedgx" path="res://maincharrigged.blend" id="2_8ifl6"]
+[ext_resource type="Script" uid="uid://c2h7fnj4umygf" path="res://Scripts/mainscript.gd" id="1_ki6c0"]
 [ext_resource type="PackedScene" uid="uid://bnagcupcutaa7" path="res://assets/models/Eleven/Eleven.glb" id="2_jmmcx"]
 [ext_resource type="Texture2D" uid="uid://cuxom4sfirpee" path="res://kloppenheim_06_puresky_4k.exr" id="5_1jq6i"]
 [ext_resource type="AudioStream" uid="uid://db4dgjynruss5" path="res://assets/music/turiruriru-01.mp3" id="5_w16ng"]
 [ext_resource type="Shader" uid="uid://dgdkjtojsmbhu" path="res://assets/shaders/toon.gdshader" id="6_fp4eh"]
 [ext_resource type="Shader" uid="uid://dvigqnwwgftj1" path="res://assets/shaders/outline.gdshader" id="7_3tio3"]
-[ext_resource type="Script" uid="uid://c1hsvx452qj01" path="res://scenes/cube.gd" id="8_dmtm4"]
 [ext_resource type="Shader" uid="uid://cb1agqsu2lkix" path="res://assets/shaders/toon_water.gdshader" id="8_jmmcx"]
-[ext_resource type="Script" uid="uid://sgh6f385n4lf" path="res://scenes/character_body_3d.gd" id="10_2n1xb"]
+[ext_resource type="Texture2D" uid="uid://dkih361pw8k6c" path="res://assets/sprites/spectator_cartoon.svg" id="10_2n1xb"]
+[ext_resource type="Texture2D" uid="uid://dgb26scv42x0c" path="res://assets/sprites/spectator_cartoon_1.svg" id="11_ha8th"]
+[ext_resource type="Texture2D" uid="uid://dtp4ytxhkg16t" path="res://assets/sprites/spectator_cartoon_2.svg" id="12_3tio3"]
+[ext_resource type="Texture2D" uid="uid://c15ey8qgjm8a8" path="res://assets/sprites/spectator_retro_blocky.svg" id="13_3tio3"]
 [ext_resource type="ArrayMesh" uid="uid://0omb6vj0e82b" path="res://assets/models/Coliseum.obj" id="14_jmmcx"]
-[ext_resource type="PackedScene" uid="uid://1q5wn6agbify" path="res://assets/Characters/eleven.tscn" id="14_vdgl5"]
-[ext_resource type="Script" uid="uid://dweg4q7v3o1j2" path="res://scenes/PoseEvaluator.gd" id="15_hnm5q"]
+[ext_resource type="Texture2D" uid="uid://cxnxpsx3ugruk" path="res://assets/sprites/spectator_cartoon_4.svg" id="14_vdgl5"]
+[ext_resource type="Texture2D" uid="uid://o3g1iwtfx257" path="res://assets/sprites/spectator_chibi.svg" id="15_hnm5q"]
 [ext_resource type="Texture2D" uid="uid://dysayoi4g77em" path="res://assets/models/Colitext.png" id="15_vdgl5"]
-[ext_resource type="Script" uid="uid://byt1i651ojvvw" path="res://scenes/WallGenerator.gd" id="16_0eirs"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3tio3"]
-frequency = 0.0731
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jmmcx"]
-noise = SubResource("FastNoiseLite_3tio3")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnm5q"]
-render_priority = 0
-shader = ExtResource("7_3tio3")
-shader_parameter/outline_width = 0.03
-shader_parameter/outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0eirs"]
-frequency = 0.037
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gg62s"]
-width = 1732
-noise = SubResource("FastNoiseLite_0eirs")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ifl6"]
-next_pass = SubResource("ShaderMaterial_hnm5q")
-albedo_color = Color(0.42745098, 1, 0, 1)
-albedo_texture = SubResource("NoiseTexture2D_jmmcx")
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_gg62s")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_twn0q"]
-material = SubResource("StandardMaterial3D_8ifl6")
-size = Vector2(3, 1.5)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w16ng"]
 
@@ -103,17 +73,6 @@ adjustment_enabled = true
 adjustment_saturation = 1.3
 adjustment_color_correction = SubResource("CurveTexture_1s0h2")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_al2iq"]
-size = Vector3(10, 1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fp4eh"]
-size = Vector3(2, 2, 0.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ha8th"]
-size = Vector3(2, 2, 0.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3tio3"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0eirs"]
 render_priority = 0
 shader = ExtResource("6_fp4eh")
@@ -130,27 +89,48 @@ shader = ExtResource("7_3tio3")
 shader_parameter/outline_width = 0.03
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="BoxMesh" id="BoxMesh_vdgl5"]
+
+[sub_resource type="Gradient" id="Gradient_vdgl5"]
+offsets = PackedFloat32Array(0, 0.22033899, 0.779661)
+colors = PackedColorArray(0, 0, 0, 1, 0.5434783, 0.5434783, 0.5434783, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hnm5q"]
+frequency = 0.0558
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0eirs"]
+noise = SubResource("FastNoiseLite_hnm5q")
+color_ramp = SubResource("Gradient_vdgl5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gg62s"]
+albedo_color = Color(0.52422875, 0.37894687, 0.30251092, 1)
+metallic = 0.45
+metallic_specular = 0.0
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_0eirs")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f44mt"]
+render_priority = 0
+shader = ExtResource("7_3tio3")
+shader_parameter/outline_width = 0.03
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
 [node name="Node3D" type="Node3D" node_paths=PackedStringArray("audioStreamPlayer")]
 script = ExtResource("1_ki6c0")
 player_scene = ExtResource("2_jmmcx")
 audioStreamPlayer = NodePath("AudioStreamPlayer3D")
-
-[node name="CameraPlane" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.994259, 0, 0, 0, 0.994259, 0, 0, 0, 0.994259, -4.1799717, 0, 0)
-mesh = SubResource("PlaneMesh_twn0q")
-
-[node name="maincharrigged" parent="." instance=ExtResource("2_8ifl6")]
-transform = Transform3D(0.16868426, -0.011973067, -0.98559755, 0.070801005, 0.9974901, -9.1790914e-10, 0.9831237, -0.06978129, 0.16910873, -3.1340518, -0.03156799, -0.406374)
-
-[node name="maincharrigged2" parent="." instance=ExtResource("2_8ifl6")]
-transform = Transform3D(-0.0066845356, 0, -0.99997765, 0, 1, 0, 0.99997765, 0, -0.0066845356, -3.1394372, 0, 0.2891082)
+offset = Vector3(0, 0, -5)
+mirror_mode = false
+model_scale = 0.2
+player1_offset = Vector3(0, 0, 2)
+player2_offset = Vector3(0, 0, 2)
 
 [node name="Water" type="MeshInstance3D" parent="."]
 transform = Transform3D(65.57431, 0, 0, 0, 1, 0, 0, 0, 114.70263, 0.20365024, 0, -0.023804307)
 mesh = SubResource("BoxMesh_dmtm4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.9878164, -0.041850366, 0.14989115, -7.723215e-09, 0.9631626, 0.26891983, -0.15562394, 0.2656434, -0.95142776, 0.62715435, 1.4327626, -5.844991)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, -4)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.59291244, 0.48824963, -0.640365, -0.11281077, 0.8377407, 0.5342885, 0.797326, -0.24454623, 0.5517866, 0, 5, 0)
@@ -162,32 +142,6 @@ environment = SubResource("Environment_1jq6i")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_w16ng")
-
-[node name="RigidBody3D2" type="RigidBody3D" parent="."]
-script = ExtResource("8_dmtm4")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
-shape = SubResource("BoxShape3D_al2iq")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(0.99995273, 0, 0.009721329, 0, 1, 0, -0.009721329, 0, 0.99995273, 8.598338, 0.15638876, -0.48185122)
-floor_snap_length = 0.07
-script = ExtResource("10_2n1xb")
-speed = 5.0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-transform = Transform3D(-0.036835603, 0, 0.99932134, 0, 1, 0, -0.99932134, 0, -0.036835603, -15.306583, 0.34691048, 0.33057606)
-mesh = SubResource("BoxMesh_fp4eh")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(-0.054845612, 0, 0.99849486, 0, 1, 0, -0.99849486, 0, -0.054845612, -15.475517, -0.19974256, 0.49321306)
-shape = SubResource("BoxShape3D_ha8th")
-
-[node name="RigidBody3D3" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.4981225)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3"]
-shape = SubResource("BoxShape3D_3tio3")
 
 [node name="Node3D" type="Node3D" parent="."]
 
@@ -201,14 +155,88 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0058689117, 0.008272171, 0.
 mesh = ExtResource("14_jmmcx")
 surface_material_override/0 = SubResource("ShaderMaterial_gg62s")
 
-[node name="Eleven" parent="Node3D/MeshInstance3D" instance=ExtResource("14_vdgl5")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.4223467, 0.55327004, -0.4585584)
-
 [node name="Humans" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, -0.83290803)
 
-[node name="PoseEvaluator" type="Node3D" parent="."]
-script = ExtResource("15_hnm5q")
+[node name="Publico" type="Node3D" parent="."]
+transform = Transform3D(-0.9993631, 0, 0.035684437, 0, 1, 0, -0.035684437, 0, -0.9993631, 0, 0, 1.2395792)
 
-[node name="WallGenerator" type="Node3D" parent="."]
-script = ExtResource("16_0eirs")
+[node name="Publico1" type="Node3D" parent="Publico"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, -0.83290803)
+
+[node name="Sprite3D" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1902349, -4.3451996)
+pixel_size = 0.003
+texture = ExtResource("10_2n1xb")
+
+[node name="Sprite3D2" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(0.9454902, 0, -0.32565066, 0, 1, 0, 0.32565066, 0, 0.9454902, 1.1753125, -0.1975398, -4.2116637)
+pixel_size = 0.0015
+texture = ExtResource("11_ha8th")
+
+[node name="Sprite3D3" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(0.9688603, 0, 0.24760781, 0, 1, 0, -0.24760781, 0, 0.9688603, -1.2231789, -0.0019948483, -4.2336745)
+pixel_size = 0.0025
+texture = ExtResource("12_3tio3")
+
+[node name="Sprite3D4" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(0.9765033, 0, 0.21550234, 0, 1, 0, -0.21550234, 0, 0.9765033, -0.8261628, 0.32664418, -4.6274414)
+pixel_size = 0.0017
+texture = ExtResource("13_3tio3")
+
+[node name="Sprite3D5" type="Sprite3D" parent="Publico/Publico1"]
+
+[node name="Sprite3D6" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(0.97844416, 0, -0.20651157, 0, 1, 0, 0.20651157, 0, 0.97844416, 0.7499453, 0, -4.398988)
+pixel_size = 0.0025
+texture = ExtResource("14_vdgl5")
+
+[node name="Sprite3D7" type="Sprite3D" parent="Publico/Publico1"]
+transform = Transform3D(0.9740708, 0, -0.2262433, 0, 1, 0, 0.2262433, 0, 0.9740708, 0.37958735, 0.5578352, -4.645806)
+pixel_size = 0.002
+texture = ExtResource("15_hnm5q")
+
+[node name="Publico3" type="Node3D" parent="Publico"]
+transform = Transform3D(0.7754187, 0, 0.6314477, 0, 1, 0, -0.6314477, 0, 0.7754187, 0.19895172, 0.76, -1.2640235)
+
+[node name="Sprite3D" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1902349, -4.3451996)
+pixel_size = 0.003
+texture = ExtResource("10_2n1xb")
+
+[node name="Sprite3D2" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(0.9454902, 0, -0.32565066, 0, 1, 0, 0.32565066, 0, 0.9454902, 1.1753125, -0.1975398, -4.2116637)
+pixel_size = 0.0015
+texture = ExtResource("11_ha8th")
+
+[node name="Sprite3D3" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(0.9688603, 0, 0.24760781, 0, 1, 0, -0.24760781, 0, 0.9688603, -1.2231789, -0.0019948483, -4.2336745)
+pixel_size = 0.0025
+texture = ExtResource("12_3tio3")
+
+[node name="Sprite3D4" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(0.9765033, 0, 0.21550234, 0, 1, 0, -0.21550234, 0, 0.9765033, -0.8261628, 0.32664418, -4.6274414)
+pixel_size = 0.0017
+texture = ExtResource("13_3tio3")
+
+[node name="Sprite3D5" type="Sprite3D" parent="Publico/Publico3"]
+
+[node name="Sprite3D6" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(0.97844416, 0, -0.20651157, 0, 1, 0, 0.20651157, 0, 0.97844416, 0.7499453, 0, -4.398988)
+pixel_size = 0.0025
+texture = ExtResource("14_vdgl5")
+
+[node name="Sprite3D7" type="Sprite3D" parent="Publico/Publico3"]
+transform = Transform3D(0.9740708, 0, -0.2262433, 0, 1, 0, 0.2262433, 0, 0.9740708, 0.37958735, 0.5578352, -4.645806)
+pixel_size = 0.002
+texture = ExtResource("15_hnm5q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.698479, 0, 0, 0, 0.13957173, 0, 0, 0, 2.0055387, 0, 0, -2.4704554)
+mesh = SubResource("BoxMesh_vdgl5")
+surface_material_override/0 = SubResource("StandardMaterial3D_gg62s")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
+mesh = SubResource("BoxMesh_vdgl5")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_f44mt")

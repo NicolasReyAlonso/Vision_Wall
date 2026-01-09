@@ -1,5 +1,88 @@
-[gd_scene load_steps=2 format=3 uid="uid://1q5wn6agbify"]
+[gd_scene load_steps=7 format=3 uid="uid://1q5wn6agbify"]
 
 [ext_resource type="PackedScene" uid="uid://bnagcupcutaa7" path="res://assets/models/Eleven/Eleven.glb" id="1_h0ygo"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ywjw1"]
+height = 0.4761963
+radius = 0.080566406
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vm8mj"]
+radius = 0.23616616
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5sy8e"]
+size = Vector3(0.6355438, 0.68640137, 0.41662598)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5dnry"]
+height = 0.27990723
+radius = 0.05126953
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vm8mj"]
+height = 0.34036255
+radius = 0.07324219
+
 [node name="Eleven" instance=ExtResource("1_h0ygo")]
+
+[node name="Area3D" type="Area3D" parent="metarig_001/Skeleton3D/Brazo Der" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Brazo Der/Area3D" index="0"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.6539917, 1.4531404, 0)
+shape = SubResource("CylinderShape3D_ywjw1")
+
+[node name="Area3D2" type="Area3D" parent="metarig_001/Skeleton3D/Brazo Izq" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3058623, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Brazo Izq/Area3D2" index="0"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.6539917, 1.4531404, 0)
+shape = SubResource("CylinderShape3D_ywjw1")
+
+[node name="Area3D" type="Area3D" parent="metarig_001/Skeleton3D/Cabeza" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Cabeza/Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9697636, 0)
+shape = SubResource("SphereShape3D_vm8mj")
+
+[node name="Area3D" type="Area3D" parent="metarig_001/Skeleton3D/Cuerpo" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Cuerpo/Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0018234294, 1.2425323, 0.0076294066)
+shape = SubResource("BoxShape3D_5sy8e")
+
+[node name="Area3D" type="Area3D" parent="metarig_001/Skeleton3D/Mano Der" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Mano Der/Area3D" index="0"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -1.0860425, 1.4482311, 0)
+shape = SubResource("CylinderShape3D_5dnry")
+
+[node name="Area3D2" type="Area3D" parent="metarig_001/Skeleton3D/Mano Izq" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Mano Izq/Area3D2" index="0"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 1.0691216, 1.4482311, 0)
+shape = SubResource("CylinderShape3D_5dnry")
+
+[node name="Area3D" type="Area3D" parent="metarig_001/Skeleton3D/Pie Izq" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42073867, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Pie Izq/Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17929095, 0.6051484, 0)
+shape = SubResource("CylinderShape3D_vm8mj")
+
+[node name="Area3D2" type="Area3D" parent="metarig_001/Skeleton3D/Pierna Der" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36195883, -0.42692602, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Pierna Der/Area3D2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17929095, 0.6051484, 0)
+shape = SubResource("CylinderShape3D_vm8mj")
+
+[node name="Area3D3" type="Area3D" parent="metarig_001/Skeleton3D/Pierna Izq" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012374905, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Pierna Izq/Area3D3" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17929095, 0.6051484, 0)
+shape = SubResource("CylinderShape3D_vm8mj")
+
+[node name="Area3D4" type="Area3D" parent="metarig_001/Skeleton3D/Pierna Izq_001" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36505282, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="metarig_001/Skeleton3D/Pierna Izq_001/Area3D4" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17929095, 0.6051484, 0)
+shape = SubResource("CylinderShape3D_vm8mj")
