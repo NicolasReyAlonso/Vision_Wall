@@ -4,6 +4,7 @@ extends Node3D
 @export var target_height: float = 2.0   # altura deseada en metros dentro del juego
 @export var player_scene: PackedScene  # Escena por defecto (fallback)
 @export var audioStreamPlayer: AudioStreamPlayer3D
+@export var audioLoop: AudioStreamPlayer3D
 @export var offset: Vector3 = Vector3.ZERO
 @export var scale_factor: float = 0.7            # Escala global
 @export var depth_scale: float = 2.0             # Escala para la profundidad (Z)
@@ -106,7 +107,15 @@ func _ready():
 		push_error("Error al conectar WebSocket: %s" % err)
 	
 	if audioStreamPlayer:
+		# Conectar señal para iniciar el audio en bucle cuando termine el intro
+		if not audioStreamPlayer.finished.is_connected(_on_intro_finished):
+			audioStreamPlayer.finished.connect(_on_intro_finished)
 		audioStreamPlayer.play()
+
+	# Asegurar que el audio de loop re-reproduzca al terminar (fallback si el stream no tiene loop)
+	if audioLoop:
+		if not audioLoop.finished.is_connected(_on_loop_finished):
+			audioLoop.finished.connect(_on_loop_finished)
 	
 	# Inicializar Game Manager
 	setup_game_manager()
@@ -551,6 +560,18 @@ func rotation_from_to(from_dir: Vector3, to_dir: Vector3) -> Quaternion:
 		var axis = from_dir.cross(to_dir).normalized()
 		var angle = acos(clamp(dot, -1.0, 1.0))
 		return Quaternion(axis, angle)
+
+
+func _on_intro_finished():
+	# Cuando termine el audio introductorio, iniciar el audio en loop (si existe)
+	if audioLoop:
+		audioLoop.play()
+
+
+func _on_loop_finished():
+	# Fallback: si el stream de loop no soporta loop nativo, re-disparar reproducir al terminar
+	if audioLoop:
+		audioLoop.play()
 
 func apply_color_to_player(player: Node, color: Color):
 	apply_color_recursive(player, color)
